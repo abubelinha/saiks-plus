@@ -1,60 +1,62 @@
-.bogus_ignored { text-decoration: none; }
+.bogus_ignored {
+    text-decoration: none;
+}
 
 .ct {
-	border-collapse:collapse;
-	border:solid 1px black;
+    border-collapse: collapse;
+    border: solid 1px black;
 }
 
 .ct td {
-	border:solid 1px black;
-	height:1px;
+    border: solid 1px black;
+    height: 1px;
 }
 
 .ct_cat {
-	padding:2px;
-	border:0;
-	margin:0;
-	font-size:110%;
-	font-weight:bold;
+    padding: 2px;
+    border: 0;
+    margin: 0;
+    font-size: 110%;
+    font-weight: bold;
 }
 
 .ct_title {
-	padding:2px;
-	border:0;
-	margin:0;
+    padding: 2px;
+    border: 0;
+    margin: 0;
 }
 
 .ctt {
-	border-collapse:collapse;
-	border:0;
-	height:100%;
+    border-collapse: collapse;
+    border: 0;
+    height: 100%;
 }
 
 .ctt td {
-	border-top:0;
-	border-bottom:0;
-	border-left:solid 1px black;
-	border-right:solid 1px black;
-	height:100%;
+    border-top: 0;
+    border-bottom: 0;
+    border-left: solid 1px black;
+    border-right: solid 1px black;
+    height: 100%;
 }
 
 .ctt_char {
-	padding:2px;
-	border:0;
-	margin:0;
+    padding: 2px;
+    border: 0;
+    margin: 0;
 }
 
 .tt {
-	border-collapse:collapse;
-	border:solid 1px black;
+    border-collapse: collapse;
+    border: solid 1px black;
 }
 
 .tt td {
-	border:solid 1px black;
+    border: solid 1px black;
 }
 
 .tt_name {
-	text-decoration:none;
+    text-decoration: none;
 }
 
 .tt_show {
