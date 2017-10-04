@@ -9,7 +9,7 @@
 
 .ct td {
     border: solid 1px black;
-    height: 1px;
+    height: 0px;
 }
 
 .ct_cat {
