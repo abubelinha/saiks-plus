@@ -10,12 +10,13 @@ var remove_mode = false;		// remove taxa instead of reddening
 
 var first_row = 1;	// to skip chars[0] and items[0] for SLIKS compat
 var char_flags = new Array();
-// == 0   -->  initial state, is selectable
-// == 1   -->  currently selected characteristic (click to unselect)
-// == 2   -->  grayed out (obviated characteristic)
+// == 0   --> initial state, is selectable
+// == 1   --> currently selected characteristic (click to unselect)
+// == 2   --> grayed out (obviated characteristic)
 var taxa_flags = new Array();
-// == 0   -->  not a possible match
+// == 0   --> not a possible match
 // == 1   --> a possible match
+// == 2   --> a best possible match
 
 // hopefully eliminate some downstream substring processing by caching
 // single-value item characteristics
@@ -260,7 +261,9 @@ function update_taxa() {
                 set_bgcolor(taxa_elems[i], "#888800");
             }
         } else {
-            if (taxa_flags[i] == 1) {
+            if (taxa_flags[i] == 2) {
+                set_bgcolor(taxa_elems[i], "#00CC00");
+            } else if (taxa_flags[i] == 1) {
                 set_bgcolor(taxa_elems[i], "#00FF00");
             } else {
                 set_bgcolor(taxa_elems[i], "#FF4444");
@@ -295,12 +298,14 @@ function compute_taxa() {
                 sub_disp = 0;
                 for (k = 0; k < items[i][j].length; k++) {
                     if (char_flags[j][parseInt(items[i][j].charAt(k), 36)] == 1) {
-                        sub_disp = 1;
+                        if (items[i][j].charAt(k + 1) == "+") {
+                            sub_disp = 2;
+                        } else {
+                            sub_disp = 1;
+                        }
                     }
                 }
-                if (sub_disp == 0) {
-                    disp = 0;
-                }
+                disp = sub_disp;
             }
 
         }
