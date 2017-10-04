@@ -262,7 +262,7 @@ function update_taxa() {
             }
         } else {
             if (taxa_flags[i] == 2) {
-                set_bgcolor(taxa_elems[i], "#00CC00");
+                set_bgcolor(taxa_elems[i], "#00DD00");
             } else if (taxa_flags[i] == 1) {
                 set_bgcolor(taxa_elems[i], "#00FF00");
             } else {
