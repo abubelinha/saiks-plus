@@ -1,7 +1,3 @@
-.bogus_ignored {
-    text-decoration: none;
-}
-
 .ct {
     border-collapse: collapse;
     border: solid 1px black;
@@ -57,7 +53,4 @@
 
 .tt_name {
     text-decoration: none;
-}
-
-.tt_show {
 }

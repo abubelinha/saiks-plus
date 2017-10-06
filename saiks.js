@@ -3,7 +3,7 @@
 // Copyright (c) 2006 Greg Alexander, to be distributed under the terms of
 // the GPLv2 (COPYING)
 
-// defaults for things that can be overriden in data.js
+// defaults for things that can be overridden in data.js
 var binary = false;
 var exclusive_mode = true;
 var remove_mode = false;		// remove taxa instead of reddening
@@ -22,7 +22,7 @@ var taxa_flags = [];
 // single-value item characteristics
 var item_cache = [];
 
-// used instead of scanning char_flags[row] (as in any_in_row_selected())
+// used instead of scanning char_flags[row]
 var char_row_state = [];
 // == 0       --> nothing selected
 // == -1      --> several selected
@@ -40,32 +40,8 @@ var char_header_run = [];
 var any_char_headers = false;
 
 
-function get_elem_by_tag_id(tag, id) {
-    var elemlist = document.getElementsByTagName(tag);
-    var len = elemlist.length;
-    var i;
-    for (i = 0; i < len; i++) {
-        if (elemlist[i].id === id) {
-            return elemlist[i];
-        }
-    }
-}
-
-// find width of characteristics table
-function find_max_char_cols() {
-    var i;
-    var max = 0;
-    for (i = first_row; i < chars.length; i++) {
-        if (chars[i].length > max) {
-            max = chars[i].length;
-        }
-    }
-    return max;
-}
-
 // emit characteristics table
 function chars_table() {
-    var max_char_cols = find_max_char_cols();
     var i;
     var j;
     var k;
@@ -95,25 +71,26 @@ function chars_table() {
     // associated with the table we want, but it seems that simply not
     // referencing document.all is enough to guarantee decent performance,
     // even on firefox!
-    var elemlist = document.getElementsByTagName("td");
-    var len = elemlist.length;
+    var elem_list = document.getElementsByTagName("td");
+    var len = elem_list.length;
     for (i = 0; i < len; i++) {
-        if (elemlist[i].id.substr(0, 4) === "char") {
+        if (elem_list[i].id.substr(0, 4) === "char") {
             var s;
-            s = elemlist[i].id.substr(4);
+            s = elem_list[i].id.substr(4);
             k = s.indexOf("m");
             j = s.substr(0, k) - 0;
             k = s.substr(k + 1) - 0;
             if (!char_elems[j]) {
                 char_elems[j] = [];
             }
-            char_elems[j][k] = elemlist[i];
+            char_elems[j][k] = elem_list[i];
         }
     }
 }
 
 // emit taxa table
 function taxa_table() {
+    var i;
     document.write("<table class=\"tt\">");
     for (i = first_row; i < items.length; i++) {
         document.write("<tr><td id=\"taxa" + i + "\">");
@@ -122,16 +99,16 @@ function taxa_table() {
         } else {
             document.write(items[i][0]);
         }
-        document.write("</td><td onClick=\"select_taxa(" + i + ");\"><img class=\"tt_show\" src=\"char-button.gif\"></td></tr>");
+        document.write("</td><td onClick=\"select_taxa(" + i + ");\"><img src=\"char-button.gif\"></td></tr>");
     }
 
     document.write("</table>");
 
-    var elemlist = document.getElementsByTagName("td");
-    var len = elemlist.length;
+    var elem_list = document.getElementsByTagName("td");
+    var len = elem_list.length;
     for (i = 0; i < len; i++) {
-        if (elemlist[i].id.substr(0, 4) === "taxa") {
-            taxa_elems[elemlist[i].id.substr(4) - 0] = elemlist[i];
+        if (elem_list[i].id.substr(0, 4) === "taxa") {
+            taxa_elems[elem_list[i].id.substr(4) - 0] = elem_list[i];
         }
     }
 }
@@ -234,11 +211,6 @@ function update_chars() {
             }
         }
     }
-}
-
-// see if anything in the characteristics row i is selected
-function any_in_row_selected(i) {
-    return (char_row_state[i] !== 0);
 }
 
 // update the taxa table to visually match the taxa_flags array
@@ -398,41 +370,11 @@ function compute_obviates() {
     }
 }
 
-var dbg_elem;
-
-function dbg_out(s) {
-    if (!dbg_elem) {
-        dbg_elem = get_elem_by_tag_id("div", "dbg");
-    }
-    dbg_elem.innerHTML += "<p>" + s + "</p>\n";
-}
-
-function dbg_reset() {
-    if (!dbg_elem) {
-        dbg_elem = get_elem_by_tag_id("div", "dbg");
-    }
-    dbg_elem.innerHTML = "";
-}
-
-var last_timeout = 0;
-
-function timeout(s) {
-    return;
-    var t = (new Date()).getTime();
-    dbg_out("" + s + ":" + (t - last_timeout) + ";\n");
-    last_timeout = t;
-}
-
 function update() {
-    timeout("upd1");
     compute_taxa();
-    timeout("upd2");
     compute_obviates();
-    timeout("upd3");
     update_chars();
-    timeout("upd4");
     update_taxa();
-    timeout("upd5");
 }
 
 function do_reset() {
@@ -483,7 +425,7 @@ function setup_char_headers() {
     }
 }
 
-function gotouse() {
+function go_to_use() {
     window.location = "use.html";
 }
 
@@ -502,7 +444,7 @@ function main() {
     document.write("<form onSubmit=\"return false;\">\n");
     document.write("<table width=100%><tr>\n");
     document.write("<td width=10%><input type=\"submit\" value=\"RESET\" onClick=\"do_reset();\"></td>\n");
-    document.write("<td align=right width=100%><input type=\"submit\" value=\"How to use SAIKS\" onClick=\"gotouse();\"></td>\n");
+    document.write("<td align=right width=100%><input type=\"submit\" value=\"How to use SAIKS\" onClick=\"go_to_use();\"></td>\n");
     document.write("</table></form><br>\n");
     document.write("</form>\n");
 
