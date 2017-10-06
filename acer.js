@@ -1,4 +1,4 @@
-var dataset = "<h2><b>Maples</b> (<i><b>Acer</i></b>) of Michigan: a Leaf Key</h2> Dataset originally published in <b>IDENT</b> (Morse 1969) format, 13 March 1969 by L.E. Morse, then transferred to <b>DELTA</b> (Dallwitz 1971) format for use in <b>ONLINE</b> (Pankhurst 1986) 26 February 1987 by G.F. Guala, then transferred to <b>SLIKS</b> (Guala 2004) format 11 July 2005 by G.F. Guala for use here.";
+var dataset = "<h2><b>Maples</b> (<b><i>Acer</i></b>) of Michigan: a Leaf Key</h2> Dataset originally published in <b>IDENT</b> (Morse 1969) format, 13 March 1969 by L.E. Morse, then transferred to <b>DELTA</b> (Dallwitz 1971) format for use in <b>ONLINE</b> (Pankhurst 1986) 26 February 1987 by G.F. Guala, then transferred to <b>SLIKS</b> (Guala 2004) format 11 July 2005 by G.F. Guala for use here.";
 var binary = false;
 var exclusive_mode = true;
 var remove_mode = false;
@@ -25,7 +25,7 @@ var chars = [["Latin Name"],
 
 
 var items = [[""],
-    ["Acer campestre", "2", "2", "2", "2", "2", "2", "?", "2", "2", "?", "1", "?", "?", "2", "2", "?", "1", "2", "http://plants.usda.gov/java/nameSearch?mode=sciname&keywordquery=Acer+campestre"],
+    ["Acer campestre", "2+", "2", "2", "2", "2", "2", "?", "2", "2", "?", "1", "?", "?", "2", "2", "?", "1", "2", "http://plants.usda.gov/java/nameSearch?mode=sciname&keywordquery=Acer+campestre"],
     ["Acer negundo", "1", "2", "?", "2", "?", "1", "?", "2", "2", "?", "2", "?", "2", "2", "1", "?", "2", "2", "http://plants.usda.gov/java/nameSearch?mode=sciname&keywordquery=Acer+negundo"],
     ["Acer nigrum", "2", "2", "2", "2", "?", "1", "2", "?", "?", "1", "?", "?", "1", "1", "?", "1", "2", "2", "http://plants.usda.gov/java/nameSearch?mode=sciname&keywordquery=Acer+nigrum"],
     ["Acer pensylvanicum", "2", "2", "2", "1", "1", "1", "2", "2", "2", "2", "2", "1", "1", "2", "2", "2", "2", "1", "http://plants.usda.gov/java/nameSearch?mode=sciname&keywordquery=Acer+pensylvanicum"],
@@ -34,5 +34,5 @@ var items = [[""],
     ["Acer rubrum", "2", "1", "2", "1", "2", "1", "2", "2", "2", "2", "?", "?", "2", "2", "2", "?", "2", "?", "http://plants.usda.gov/java/nameSearch?mode=sciname&keywordquery=Acer+rubrum"],
     ["Acer saccharinum", "2", "?", "2", "?", "2", "1", "1", "2", "2", "2", "1", "?", "?", "2", "2", "2", "2", "2", "http://plants.usda.gov/java/nameSearch?mode=sciname&keywordquery=Acer+saccharinum"],
     ["Acer saccharum", "2", "?", "2", "2", "2", "1", "2", "2", "?", "2", "1", "2", "?", "2", "2", "2", "2", "2", "http://plants.usda.gov/java/nameSearch?mode=sciname&keywordquery=Acer+saccharum"],
-    ["Acer spicatum", "2", "2", "2", "1", "?", "1", "2", "2", "2", "?", "1", "1", "?", "2", "2", "?", "2", "23", "http://plants.usda.gov/java/nameSearch?mode=sciname&keywordquery=Acer+spicatum"]
+    ["Acer spicatum", "2", "2", "2", "1", "?", "1", "2", "2", "2", "?", "1", "1", "?", "2", "2", "?", "2", "23+", "http://plants.usda.gov/java/nameSearch?mode=sciname&keywordquery=Acer+spicatum"]
 ];

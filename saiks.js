@@ -192,7 +192,7 @@ function select_taxa(i) {
 // the specified CSS ID
 function set_bgcolor(elem, color) {
     if (!elem) return;
-    elem.setAttribute("bgColor", color);
+    elem.setAttribute("style", "background-color:" + color);
 }
 
 // update the visual aspect of the characteristics table from char_flags
