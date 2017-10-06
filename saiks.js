@@ -9,34 +9,34 @@ var exclusive_mode = true;
 var remove_mode = false;		// remove taxa instead of reddening
 
 var first_row = 1;	// to skip chars[0] and items[0] for SLIKS compat
-var char_flags = new Array();
+var char_flags = [];
 // == 0   --> initial state, is selectable
 // == 1   --> currently selected characteristic (click to unselect)
 // == 2   --> grayed out (obviated characteristic)
-var taxa_flags = new Array();
+var taxa_flags = [];
 // == 0   --> not a possible match
 // == 1   --> a possible match
 // == 2   --> a best possible match
 
 // hopefully eliminate some downstream substring processing by caching
 // single-value item characteristics
-var item_cache = new Array();
+var item_cache = [];
 
 // used instead of scanning char_flags[row] (as in any_in_row_selected())
-var char_row_state = new Array();
+var char_row_state = [];
 // == 0       --> nothing selected
 // == -1      --> several selected
 // == 1-35    --> just that col selected (great for exclusive/binary mode!)
 
 // these are initialized by *_table() to work around the fact that MSIE
 // (et al?) have a distinct lack of document.getElementById()
-var char_elems = new Array();
-var taxa_elems = new Array();
+var char_elems = [];
+var taxa_elems = [];
 
 // to support categories of characteristics
-var char_titles = new Array();
-var char_headers = new Array();
-var char_header_run = new Array();
+var char_titles = [];
+var char_headers = [];
+var char_header_run = [];
 var any_char_headers = false;
 
 
@@ -45,7 +45,7 @@ function get_elem_by_tag_id(tag, id) {
     var len = elemlist.length;
     var i;
     for (i = 0; i < len; i++) {
-        if (elemlist[i].id == id) {
+        if (elemlist[i].id === id) {
             return elemlist[i];
         }
     }
@@ -98,14 +98,14 @@ function chars_table() {
     var elemlist = document.getElementsByTagName("td");
     var len = elemlist.length;
     for (i = 0; i < len; i++) {
-        if (elemlist[i].id.substr(0, 4) == "char") {
+        if (elemlist[i].id.substr(0, 4) === "char") {
             var s;
             s = elemlist[i].id.substr(4);
             k = s.indexOf("m");
             j = s.substr(0, k) - 0;
             k = s.substr(k + 1) - 0;
             if (!char_elems[j]) {
-                char_elems[j] = new Array();
+                char_elems[j] = [];
             }
             char_elems[j][k] = elemlist[i];
         }
@@ -130,7 +130,7 @@ function taxa_table() {
     var elemlist = document.getElementsByTagName("td");
     var len = elemlist.length;
     for (i = 0; i < len; i++) {
-        if (elemlist[i].id.substr(0, 4) == "taxa") {
+        if (elemlist[i].id.substr(0, 4) === "taxa") {
             taxa_elems[elemlist[i].id.substr(4) - 0] = elemlist[i];
         }
     }
@@ -141,7 +141,7 @@ function init_char_flags() {
     var i;
     var j;
     for (i = first_row; i < chars.length; i++) {
-        char_flags[i] = new Array();
+        char_flags[i] = [];
         for (j = 1; j < chars[i].length; j++) {
             char_flags[i][j] = 0;
         }
@@ -153,7 +153,7 @@ function init_char_flags() {
 function toggle_char(i, j) {
     var k;
 
-    if (char_flags[i][j] == 1) {
+    if (char_flags[i][j] === 1) {
         char_flags[i][j] = 0;
     } else {
         if (exclusive_mode) {
@@ -169,8 +169,8 @@ function toggle_char(i, j) {
     // update char_row_state[i]
     char_row_state[i] = 0;
     for (k = 1; k < char_flags[i].length; k++) {
-        if (char_flags[i][k] == 1) {
-            if (char_row_state[i] == 0) {
+        if (char_flags[i][k] === 1) {
+            if (char_row_state[i] === 0) {
                 char_row_state[i] = k;
             } else {
                 char_row_state[i] = -1;
@@ -193,7 +193,7 @@ function select_taxa(i) {
         if (x) {
             char_flags[j][x] = 1;
             char_row_state[j] = x;
-        } else if (items[i][j] == "?") {
+        } else if (items[i][j] === "?") {
             // wildcard -- set them all
             for (k = 0; k < char_flags[j].length; k++) {
                 char_flags[j][k] = 1;
@@ -214,8 +214,6 @@ function select_taxa(i) {
 // do whatever appropriate browser magic to set the background color of
 // the specified CSS ID
 function set_bgcolor(elem, color) {
-    var i;
-
     if (!elem) return;
     elem.setAttribute("bgColor", color);
 }
@@ -227,9 +225,9 @@ function update_chars() {
 
     for (i = first_row; i < chars.length; i++) {
         for (j = 1; j < char_flags[i].length; j++) {
-            if (char_flags[i][j] == 2) {
+            if (char_flags[i][j] === 2) {
                 set_bgcolor(char_elems[i][j], "#7777AA");
-            } else if (char_flags[i][j] == 1) {
+            } else if (char_flags[i][j] === 1) {
                 set_bgcolor(char_elems[i][j], "#00FF00");
             } else {
                 set_bgcolor(char_elems[i][j], "#AAAAFF");
@@ -240,20 +238,19 @@ function update_chars() {
 
 // see if anything in the characteristics row i is selected
 function any_in_row_selected(i) {
-    return (char_row_state[i] != 0);
+    return (char_row_state[i] !== 0);
 }
 
 // update the taxa table to visually match the taxa_flags array
 function update_taxa() {
     var i;
-    var j;
 
     for (i = first_row; i < items.length; i++) {
         if (remove_mode) {
             // XXX - to make remove_mode work, I think we change
             // taxa table to not be a table, but rather a list of
             // divs...and then we can do this display="none" hack.
-            if (taxa_flags[i] == 1) {
+            if (taxa_flags[i] >= 1) {
                 set_bgcolor(taxa_elems[i], "#0088ff");
                 taxa_elems[i].display = "block";
             } else {
@@ -261,9 +258,9 @@ function update_taxa() {
                 set_bgcolor(taxa_elems[i], "#888800");
             }
         } else {
-            if (taxa_flags[i] == 2) {
+            if (taxa_flags[i] === 2) {
                 set_bgcolor(taxa_elems[i], "#00DD00");
-            } else if (taxa_flags[i] == 1) {
+            } else if (taxa_flags[i] === 1) {
                 set_bgcolor(taxa_elems[i], "#00FF00");
             } else {
                 set_bgcolor(taxa_elems[i], "#FF4444");
@@ -284,21 +281,21 @@ function compute_taxa() {
     for (i = first_row; i < items.length; i++) {
         disp = 1;
         for (j = first_row; j < chars.length; j++) {
-            if (char_row_state[j] == 0) {
+            if (char_row_state[j] === 0) {
                 // nothing selected, assume match
             } else if (item_cache[i][j]) {
-                if (char_flags[j][item_cache[i][j]] != 1) {
+                if (char_flags[j][item_cache[i][j]] !== 1) {
                     disp = 0;
                 }
-            } else if (items[i][j] == "?") {
+            } else if (items[i][j] === "?") {
                 // wildcard, matches everything
             } else {
                 // disp remains only if the corresponding
                 // element of char_flags is set
                 sub_disp = 0;
                 for (k = 0; k < items[i][j].length; k++) {
-                    if (char_flags[j][parseInt(items[i][j].charAt(k), 36)] == 1) {
-                        if (items[i][j].charAt(k + 1) == "+") {
+                    if (char_flags[j][parseInt(items[i][j].charAt(k), 36)] === 1) {
+                        if (items[i][j].charAt(k + 1) === "+") {
                             sub_disp = 2;
                         } else {
                             sub_disp = 1;
@@ -317,21 +314,20 @@ function compute_taxa() {
 function compute_obviates_binary() {
     var i;
     var j;
-    var k;
 
     for (i = first_row; i < chars.length; i++) {
-        if (char_row_state[i] == 0) {
+        if (char_row_state[i] === 0) {
             var poss;
             poss = 0;
             // == 1  --> Yes
             // == 2  --> No
             // == 3  --> Either
             for (j = first_row; j < items.length; j++) {
-                if (taxa_flags[j] == 1) {
+                if (taxa_flags[j] >= 1) {
                     var x = item_cache[j][i];
                     if (x) {
                         poss |= x;
-                        if (poss == 3) {
+                        if (poss === 3) {
                             // yes and no both possible
                             break;
                         }
@@ -343,7 +339,7 @@ function compute_obviates_binary() {
                 }
             }
             for (j = first_row; j < char_flags[i].length; j++) {
-                if (poss & j) {
+                if (poss && j) {
                     char_flags[i][j] = 0;
                 } else {
                     char_flags[i][j] = 2;
@@ -366,19 +362,19 @@ function compute_obviates() {
     }
 
     for (i = first_row; i < chars.length; i++) {
-        if (char_row_state[i] == 0) {
+        if (char_row_state[i] === 0) {
             // really instead of using a private array for the possibilities, we
             // could use a bitmask...but frankly I don't trust javascript binary
             // arithmetic, so use the poss[] array instead
             var poss;
-            poss = new Array();
+            poss = [];
             match_everything = false;
             // first mark all possibilities
             for (j = first_row; j < items.length; j++) {
-                if (taxa_flags[j] == 1) {
+                if (taxa_flags[j] >= 1) {
                     if (item_cache[j][i]) {
                         poss[item_cache[j][i]] = true;
-                    } else if (items[j][i] == "?") {
+                    } else if (items[j][i] === "?") {
                         // wildcard - match everything
                         match_everything = true;
                         break;
@@ -449,10 +445,10 @@ function cache_items() {
     var j;
 
     for (i = first_row; i < items.length; i++) {
-        item_cache[i] = new Array();
+        item_cache[i] = [];
         for (j = first_row; j < items[i].length; j++) {
             var x = items[i][j];
-            if (x != "?" && x.length == 1) {
+            if (x.length === 1 && x !== "?") {
                 item_cache[i][j] = parseInt(x, 36);
             }
         }
@@ -466,7 +462,7 @@ function setup_char_headers() {
     for (i = 0; i < chars.length; i++) {
         var s = chars[i][0];
         var x = s.indexOf("|");
-        if (x == -1) {
+        if (x === -1) {
             // no header
             char_headers[i] = "";
             char_titles[i] = s;
@@ -478,7 +474,7 @@ function setup_char_headers() {
     }
     last_i = 0;
     for (i = 0; i < chars.length; i++) {
-        if (char_headers[i] == char_headers[last_i]) {
+        if (char_headers[i] === char_headers[last_i]) {
             char_header_run[last_i] = (i + 1) - last_i;
         } else {
             last_i = i;

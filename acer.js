@@ -29,11 +29,11 @@ var items = [[""],
     ["Acer campestre", "2+", "2", "2", "2", "2", "2", "?", "2", "2", "?", "1", "?", "?", "2", "2", "?", "1", "2", "http://plants.usda.gov/java/nameSearch?mode=sciname&keywordquery=Acer+campestre"],
     ["Acer negundo", "1", "2", "?", "2", "?", "1", "?", "2", "2", "?", "2", "?", "2", "2", "1", "?", "2", "2", "http://plants.usda.gov/java/nameSearch?mode=sciname&keywordquery=Acer+negundo"],
     ["Acer nigrum", "2", "2", "2", "2", "?", "1", "2", "?", "?", "1", "?", "?", "1", "1", "?", "1", "2", "2", "http://plants.usda.gov/java/nameSearch?mode=sciname&keywordquery=Acer+nigrum"],
-    ["Acer pensylvanicum", "2", "2", "2", "1", "1+", "1", "2", "2", "2", "2", "2", "1", "1", "2", "2", "2", "2", "1", "http://plants.usda.gov/java/nameSearch?mode=sciname&keywordquery=Acer+pensylvanicum"],
+    ["Acer pensylvanicum", "2", "2", "2", "1", "1", "1", "2", "2", "2", "2", "2", "1", "1", "2", "2", "2", "2", "1", "http://plants.usda.gov/java/nameSearch?mode=sciname&keywordquery=Acer+pensylvanicum"],
     ["Acer platanoides", "2", "2", "1", "2", "2", "1", "2", "2", "2", "2", "1", "2", "1", "2", "2", "2", "1", "2", "http://plants.usda.gov/java/nameSearch?mode=sciname&keywordquery=Acer+platanoides"],
     ["Acer pseudoplatanus", "2", "1", "2", "1", "2", "1", "2", "2", "2", "2", "?", "2", "2", "1", "2", "?", "2", "2", "http://plants.usda.gov/java/nameSearch?mode=sciname&keywordquery=Acer+pseudoplatanus"],
     ["Acer rubrum", "2", "1", "2", "1", "2", "1", "2", "2", "2", "2", "?", "?", "2", "2", "2", "?", "2", "?", "http://plants.usda.gov/java/nameSearch?mode=sciname&keywordquery=Acer+rubrum"],
     ["Acer saccharinum", "2", "?", "2", "?", "2", "1", "1", "2", "2", "2", "1", "?", "?", "2", "2", "2", "2", "2", "http://plants.usda.gov/java/nameSearch?mode=sciname&keywordquery=Acer+saccharinum"],
-    ["Acer saccharum", "2", "?", "2", "2", "2", "1", "2+", "2", "?", "2", "1", "2", "?", "2", "2", "2", "2", "2", "http://plants.usda.gov/java/nameSearch?mode=sciname&keywordquery=Acer+saccharum"],
+    ["Acer saccharum", "2", "?", "2", "2", "2", "1", "2", "2", "?", "2", "1", "2", "?", "2", "2", "2", "2", "2", "http://plants.usda.gov/java/nameSearch?mode=sciname&keywordquery=Acer+saccharum"],
     ["Acer spicatum", "2", "2", "2", "1", "?", "1", "2", "2", "2", "?", "1", "1", "?", "2", "2", "?", "2", "23", "http://plants.usda.gov/java/nameSearch?mode=sciname&keywordquery=Acer+spicatum"]
 ];
