@@ -13,7 +13,8 @@ Derived from Stinger's Lightweight Interactive Key Software (SLIKS)
 from http://stingersplace.com/SLIKS/ by Gerald F. Guala.
 
 SAIKS is copyright (c) 2006 Greg Alexander, to be distributed under
-the terms of GPLv2 (in COPYING).
+the terms of GPLv2 (in COPYING), or the Apache License
+(http://www.apache.org/licenses/LICENSE-2.0), at your discretion.
 
 The idea is that you create a file like acer.js that contains your
 dataset.  SAIKS uses the same format for this file as SLIKS does.

@@ -1,7 +1,10 @@
 // SLIKS-Alike Interactive Key Software (SAIKS)
 // Inspired by SLIKS from http://stingersplace.com/SLIKS/ by Gerald F. Guala
 // Copyright (c) 2006 Greg Alexander, to be distributed under the terms of
-// the GPLv2 (COPYING)
+// the GPLv2 (COPYING), or the Apache License
+// (http://www.apache.org/licenses/LICENSE-2.0), at your discretion
+
+var old_display_mode = false;
 
 // defaults for things that can be overridden in data.js
 var binary = false;
@@ -42,9 +45,7 @@ var any_char_headers = false;
 
 // emit characteristics table
 function chars_table() {
-    var i;
-    var j;
-    var k;
+    var i, j, k;
 
     document.write("<table border=1 cellspacing=0 cellpadding=0 class=\"ct\">\n");
 
@@ -95,7 +96,7 @@ function taxa_table() {
     for (i = first_row; i < items.length; i++) {
         document.write("<tr><td id=\"taxa" + i + "\">");
         if (items[i][chars.length]) {
-            document.write("<a class=\"tt_name\" href=\"" + items[i][chars.length] + "\">" + items[i][0] + "</a>");
+            document.write("<a class=\"tt_name\" target=\"_blank\" href=\"" + items[i][chars.length] + "\">" + items[i][0] + "</a>");
         } else {
             document.write(items[i][0]);
         }
@@ -115,8 +116,7 @@ function taxa_table() {
 
 // inits the list of the currently selected characteristics
 function init_char_flags() {
-    var i;
-    var j;
+    var i, j;
     for (i = first_row; i < chars.length; i++) {
         char_flags[i] = [];
         for (j = 1; j < chars[i].length; j++) {
@@ -160,8 +160,7 @@ function toggle_char(i, j) {
 
 // sets the characteristics for a specific taxa
 function select_taxa(i) {
-    var j;
-    var k;
+    var j, k;
 
     init_char_flags();		// reset everything to defaults first
 
@@ -178,8 +177,10 @@ function select_taxa(i) {
             char_row_state[j] = -1;
         } else {
             // polymorphous subset...
-            for (k = 0; k < items[i][j].length; k++) {
-                char_flags[j][parseInt(items[i][j].charAt(k), 36)] = 1;
+            var item = items[i][j].replace("+", "");
+            console.log(item);
+            for (k = 0; k < item.length; k++) {
+                char_flags[j][parseInt(item.charAt(k), 36)] = 1;
             }
             char_row_state[j] = -1;
         }
@@ -197,8 +198,7 @@ function set_bgcolor(elem, color) {
 
 // update the visual aspect of the characteristics table from char_flags
 function update_chars() {
-    var i;
-    var j;
+    var i, j;
 
     for (i = first_row; i < chars.length; i++) {
         for (j = 1; j < char_flags[i].length; j++) {
@@ -244,11 +244,7 @@ function update_taxa() {
 // given the current state of char_flags, compute taxa_flags
 // (possible matching taxa)
 function compute_taxa() {
-    var i;
-    var j;
-    var k;
-    var disp;
-    var sub_disp;
+    var i, j, k, disp, sub_disp;
 
     for (i = first_row; i < items.length; i++) {
         disp = 1;
@@ -267,14 +263,15 @@ function compute_taxa() {
                 sub_disp = 0;
                 for (k = 0; k < items[i][j].length; k++) {
                     if (char_flags[j][parseInt(items[i][j].charAt(k), 36)] === 1) {
+                        sub_disp = 1;
                         if (items[i][j].charAt(k + 1) === "+") {
-                            sub_disp = 2;
-                        } else {
-                            sub_disp = 1;
+                            disp = 2;
                         }
                     }
                 }
-                disp = sub_disp;
+                if (sub_disp === 0) {
+                    disp = 0;
+                }
             }
 
         }
@@ -284,8 +281,7 @@ function compute_taxa() {
 
 // some selections obviate others (set char_flags to 2 for obviated ones)
 function compute_obviates_binary() {
-    var i;
-    var j;
+    var i, j;
 
     for (i = first_row; i < chars.length; i++) {
         if (char_row_state[i] === 0) {
@@ -322,10 +318,7 @@ function compute_obviates_binary() {
 }
 
 function compute_obviates() {
-    var i;
-    var j;
-    var k;
-    var match_everything;
+    var i, j, k, match_everything;
 
     if (binary) {
         // use optimized version instead
@@ -351,8 +344,9 @@ function compute_obviates() {
                         match_everything = true;
                         break;
                     } else {
-                        for (k = 0; k < items[j][i].length; k++) {
-                            poss[parseInt(items[j][i].charAt(k), 36)] = true;
+                        var item = items[j][i].replace("+", "");
+                        for (k = 0; k < item.length; k++) {
+                            poss[parseInt(item.charAt(k), 36)] = true;
                         }
                     }
                 }
@@ -383,8 +377,7 @@ function do_reset() {
 }
 
 function cache_items() {
-    var i;
-    var j;
+    var i, j;
 
     for (i = first_row; i < items.length; i++) {
         item_cache[i] = [];
@@ -399,8 +392,7 @@ function cache_items() {
 
 // initialize the char_headers and char_titles arrays
 function setup_char_headers() {
-    var i;
-    var last_i;
+    var i, last_i;
     for (i = 0; i < chars.length; i++) {
         var s = chars[i][0];
         var x = s.indexOf("|");
@@ -448,11 +440,23 @@ function main() {
     document.write("</table></form><br>\n");
     document.write("</form>\n");
 
-    document.write("<table width=100%><tr><td width=70% valign=top align=center>\n");
-    chars_table();
-    document.write("</td><td width=30% valign=top align=center>\n");
-    taxa_table();
-    document.write("</td></tr></table>\n");
+    if (old_display_mode) {
+        // the old way, with a table containing the two tables
+        document.write("<table width=100%><tr><td width=70% valign=top align=center>\n");
+        chars_table();
+        document.write("</td><td width=30% valign=top align=center>\n");
+        taxa_table();
+        document.write("</td></tr></table>\n");
+        console.log("test");
+    } else {
+        var my_height = 0.65 * screen.height;
+        // newer way, with tables in css scroll regions?
+        document.write("<table width=100%><tr><td width=70% valign=top align=center><div style=\"overflow:scroll; height:" + my_height + "px;\">\n");
+        chars_table();
+        document.write("</div></td><td width=30% valign=top align=center><div style=\"overflow:scroll; height:" + my_height + "px;\">\n");
+        taxa_table();
+        document.write("</div></td></tr></table>\n");
+    }
 
     init_char_flags();
     update();
