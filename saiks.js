@@ -15,11 +15,12 @@ var first_row = 1;	// to skip chars[0] and items[0] for SLIKS compat
 var char_flags = [];
 // == 0   --> initial state, is selectable
 // == 1   --> currently selected characteristic (click to unselect)
-// == 2   --> grayed out (obviated characteristic)
+// == 2   --> selected characteristic that triggers a most possible match
+// == -1   --> grayed out (obviated characteristic)
 var taxa_flags = [];
 // == 0   --> not a possible match
 // == 1   --> a possible match
-// == 2   --> a best possible match
+// == 2   --> a most possible match
 
 // hopefully eliminate some downstream substring processing by caching
 // single-value item characteristics
@@ -116,10 +117,9 @@ function taxa_table() {
 
 // inits the list of the currently selected characteristics
 function init_char_flags() {
-    var i, j;
-    for (i = first_row; i < chars.length; i++) {
+    for (var i = first_row; i < chars.length; i++) {
         char_flags[i] = [];
-        for (j = 1; j < chars[i].length; j++) {
+        for (var j = 1; j < chars[i].length; j++) {
             char_flags[i][j] = 0;
         }
         char_row_state[i] = 0;
@@ -128,9 +128,7 @@ function init_char_flags() {
 
 // toggles characteristic (i,j) in the table
 function toggle_char(i, j) {
-    var k;
-
-    if (char_flags[i][j] === 1) {
+    if (char_flags[i][j] > 0) {
         char_flags[i][j] = 0;
     } else {
         if (exclusive_mode) {
@@ -145,7 +143,7 @@ function toggle_char(i, j) {
 
     // update char_row_state[i]
     char_row_state[i] = 0;
-    for (k = 1; k < char_flags[i].length; k++) {
+    for (var k = 1; k < char_flags[i].length; k++) {
         if (char_flags[i][k] === 1) {
             if (char_row_state[i] === 0) {
                 char_row_state[i] = k;
@@ -160,11 +158,9 @@ function toggle_char(i, j) {
 
 // sets the characteristics for a specific taxa
 function select_taxa(i) {
-    var j, k;
-
     init_char_flags();		// reset everything to defaults first
 
-    for (j = first_row; j < chars.length; j++) {
+    for (var j = first_row; j < chars.length; j++) {
         var x = item_cache[i][j];
         if (x) {
             char_flags[j][x] = 1;
@@ -177,10 +173,15 @@ function select_taxa(i) {
             char_row_state[j] = -1;
         } else {
             // polymorphous subset...
-            var item = items[i][j].replace("+", "");
-            console.log(item);
-            for (k = 0; k < item.length; k++) {
-                char_flags[j][parseInt(item.charAt(k), 36)] = 1;
+            for (var k = 0; k < items[i][j].length; k++) {
+                var char_flag_index = parseInt(items[i][j].charAt(k), 36);
+                if (!isNaN(char_flag_index)) {
+                    if (items[i][j].charAt(k + 1) === "+") {
+                        char_flags[j][char_flag_index] = 2;
+                    } else {
+                        char_flags[j][char_flag_index] = 1;
+                    }
+                }
             }
             char_row_state[j] = -1;
         }
@@ -198,16 +199,20 @@ function set_bgcolor(elem, color) {
 
 // update the visual aspect of the characteristics table from char_flags
 function update_chars() {
-    var i, j;
-
-    for (i = first_row; i < chars.length; i++) {
-        for (j = 1; j < char_flags[i].length; j++) {
-            if (char_flags[i][j] === 2) {
-                set_bgcolor(char_elems[i][j], "#7777AA");
-            } else if (char_flags[i][j] === 1) {
-                set_bgcolor(char_elems[i][j], "#00FF00");
-            } else {
-                set_bgcolor(char_elems[i][j], "#AAAAFF");
+    for (var i = first_row; i < chars.length; i++) {
+        for (var j = 1; j < char_flags[i].length; j++) {
+            switch (char_flags[i][j]) {
+                case -1:
+                    set_bgcolor(char_elems[i][j], "#7777AA");
+                    break;
+                case 1:
+                    set_bgcolor(char_elems[i][j], "#00FF00");
+                    break;
+                case 2:
+                    set_bgcolor(char_elems[i][j], "#00CC00");
+                    break;
+                default:
+                    set_bgcolor(char_elems[i][j], "#AAAAFF");
             }
         }
     }
@@ -215,9 +220,7 @@ function update_chars() {
 
 // update the taxa table to visually match the taxa_flags array
 function update_taxa() {
-    var i;
-
-    for (i = first_row; i < items.length; i++) {
+    for (var i = first_row; i < items.length; i++) {
         if (remove_mode) {
             // XXX - to make remove_mode work, I think we change
             // taxa table to not be a table, but rather a list of
@@ -230,12 +233,15 @@ function update_taxa() {
                 set_bgcolor(taxa_elems[i], "#888800");
             }
         } else {
-            if (taxa_flags[i] === 2) {
-                set_bgcolor(taxa_elems[i], "#00DD00");
-            } else if (taxa_flags[i] === 1) {
-                set_bgcolor(taxa_elems[i], "#00FF00");
-            } else {
-                set_bgcolor(taxa_elems[i], "#FF4444");
+            switch (taxa_flags[i]) {
+                case 1:
+                    set_bgcolor(taxa_elems[i], "#00FF00");
+                    break;
+                case 2:
+                    set_bgcolor(taxa_elems[i], "#00CC00");
+                    break;
+                default:
+                    set_bgcolor(taxa_elems[i], "#FF4444");
             }
         }
     }
@@ -244,15 +250,16 @@ function update_taxa() {
 // given the current state of char_flags, compute taxa_flags
 // (possible matching taxa)
 function compute_taxa() {
-    var i, j, k, disp, sub_disp;
+    var i, j, k, disp, sub_disp, most_possible;
 
     for (i = first_row; i < items.length; i++) {
         disp = 1;
+        most_possible = false;
         for (j = first_row; j < chars.length; j++) {
             if (char_row_state[j] === 0) {
                 // nothing selected, assume match
             } else if (item_cache[i][j]) {
-                if (char_flags[j][item_cache[i][j]] !== 1) {
+                if (char_flags[j][item_cache[i][j]] < 1) {
                     disp = 0;
                 }
             } else if (items[i][j] === "?") {
@@ -262,10 +269,11 @@ function compute_taxa() {
                 // element of char_flags is set
                 sub_disp = 0;
                 for (k = 0; k < items[i][j].length; k++) {
-                    if (char_flags[j][parseInt(items[i][j].charAt(k), 36)] === 1) {
+                    var char_flag_index = parseInt(items[i][j].charAt(k), 36);
+                    if (!isNaN(char_flag_index) && char_flags[j][char_flag_index] > 0) {
                         sub_disp = 1;
                         if (items[i][j].charAt(k + 1) === "+") {
-                            disp = 2;
+                            most_possible = true;
                         }
                     }
                 }
@@ -275,11 +283,14 @@ function compute_taxa() {
             }
 
         }
+        if (disp === 1 && most_possible) {
+            disp = 2;
+        }
         taxa_flags[i] = disp;
     }
 }
 
-// some selections obviate others (set char_flags to 2 for obviated ones)
+// some selections obviate others (set char_flags to -1 for obviated ones)
 function compute_obviates_binary() {
     var i, j;
 
@@ -291,7 +302,7 @@ function compute_obviates_binary() {
             // == 2  --> No
             // == 3  --> Either
             for (j = first_row; j < items.length; j++) {
-                if (taxa_flags[j] >= 1) {
+                if (taxa_flags[j] > 0) {
                     var x = item_cache[j][i];
                     if (x) {
                         poss |= x;
@@ -310,7 +321,7 @@ function compute_obviates_binary() {
                 if (poss && j) {
                     char_flags[i][j] = 0;
                 } else {
-                    char_flags[i][j] = 2;
+                    char_flags[i][j] = -1;
                 }
             }
         }
@@ -357,7 +368,7 @@ function compute_obviates() {
                 if (match_everything || poss[j]) {
                     char_flags[i][j] = 0;
                 } else {
-                    char_flags[i][j] = 2;
+                    char_flags[i][j] = -1;
                 }
             }
         }
@@ -447,7 +458,6 @@ function main() {
         document.write("</td><td width=30% valign=top align=center>\n");
         taxa_table();
         document.write("</td></tr></table>\n");
-        console.log("test");
     } else {
         var my_height = 0.65 * screen.height;
         // newer way, with tables in css scroll regions?
