@@ -4,7 +4,7 @@
 // the GPLv2 (COPYING), or the Apache License
 // (http://www.apache.org/licenses/LICENSE-2.0), at your discretion
 
-var old_display_mode = true;
+var old_display_mode = false;
 
 // defaults for things that can be overridden in data.js
 var binary = false;
@@ -462,9 +462,9 @@ function main() {
     } else {
         var my_height = 0.65 * screen.height;
         // newer way, with tables in css scroll regions?
-        document.write("<table width=100%><tr><td width=70% valign=top align=center><div style=\"overflow:scroll; height:" + my_height + "px;\">\n");
+        document.write("<table width=100%><tr><td width=70% valign=top align=center><div style=\"overflow:auto; height:" + my_height + "px;\">\n");
         chars_table();
-        document.write("</div></td><td width=30% valign=top align=center><div style=\"overflow:scroll; height:" + my_height + "px;\">\n");
+        document.write("</div></td><td width=30% valign=top align=center><div style=\"overflow:auto; height:" + my_height + "px;\">\n");
         taxa_table();
         document.write("</div></td></tr></table>\n");
     }
