@@ -4,7 +4,7 @@
 // the GPLv2 (COPYING), or the Apache License
 // (http://www.apache.org/licenses/LICENSE-2.0), at your discretion
 
-var old_display_mode = false;
+var old_display_mode = true;
 
 // defaults for things that can be overridden in data.js
 var binary = false;
@@ -48,7 +48,7 @@ var any_char_headers = false;
 function chars_table() {
     var i, j, k;
 
-    document.write("<table border=1 cellspacing=0 cellpadding=0 class=\"ct\">\n");
+    document.write("<table class=\"ct\">\n");
 
     for (i = first_row; i < chars.length; i++) {
         var percent;
@@ -59,7 +59,7 @@ function chars_table() {
             }
         }
         document.write("<td><div class=\"ct_title\">" + char_titles[i] + "</div></td>\n");
-        document.write("<td><table border=1 cellspacing=0 width=100% class=\"ctt\"><tr>\n");
+        document.write("<td><table class=\"ctt\"><tr>\n");
         percent = 100 / (chars[i].length - 1);
         for (j = 1; j < chars[i].length; j++) {
             document.write("<td width=" + percent + "% id=\"char" + i + "m" + j + "\" onClick=\"toggle_char(" + i + "," + j + ");\"><div class=\"ctt_char\">" + chars[i][j] + "</div></td>\n");
@@ -444,6 +444,7 @@ function main() {
     setup_char_headers();
 
     // output the button bar along the top
+    document.write(dataset + "\n");
     document.write("<form onSubmit=\"return false;\">\n");
     document.write("<table width=100%><tr>\n");
     document.write("<td width=10%><input type=\"submit\" value=\"RESET\" onClick=\"do_reset();\"></td>\n");

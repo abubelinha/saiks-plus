@@ -1,4 +1,4 @@
-var dataset = "<h2><b>Maples</b> (<b><i>Acer</i></b>) of Michigan: a Leaf Key</h2> Dataset originally published in <b>IDENT</b> (Morse 1969) format, 13 March 1969 by L.E. Morse, then transferred to <b>DELTA</b> (Dallwitz 1971) format for use in <b>ONLINE</b> (Pankhurst 1986) 26 February 1987 by G.F. Guala, then transferred to <b>SLIKS</b> (Guala 2004) format 11 July 2005 by G.F. Guala for use here.";
+var dataset = "<h2><b>Maples</b> (<b><i>Acer</i></b>) of Michigan: a Leaf Key</h2><p>Dataset originally published in <b>IDENT</b> (Morse 1969) format, 13 March 1969 by L.E. Morse, then transferred to <b>DELTA</b> (Dallwitz 1971) format for use in <b>ONLINE</b> (Pankhurst 1986) 26 February 1987 by G.F. Guala, then transferred to <b>SLIKS</b> (Guala 2004) format 11 July 2005 by G.F. Guala.</p>";
 
 var binary = false;
 var exclusive_mode = true;

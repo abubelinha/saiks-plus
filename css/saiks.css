@@ -1,11 +1,31 @@
+@font-face {
+    font-family: 'Muli';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Muli Regular'), local('Muli-Regular'), url(fonts/muli.ttf) format('truetype');
+}
+
+body {
+    font: 400 16px 'Muli', sans-serif !important;
+    margin: 0;
+    padding: 0 10px;
+}
+
+a, a:link, a:hover, a:visited, a:active {
+    color: blue;
+}
+
 .ct {
     border-collapse: collapse;
-    border: solid 1px black;
+    border: 0;
 }
 
 .ct td {
-    border: solid 1px black;
-    height: 0px;
+    border-top: solid 1px black;
+    border-bottom: solid 1px black;
+    border-left: solid 1px black;
+    border-right: 0;
+    height: 0;
 }
 
 .ct_cat {
@@ -25,13 +45,14 @@
 .ctt {
     border-collapse: collapse;
     border: 0;
+    width: 100%;
     height: 100%;
 }
 
 .ctt td {
     border-top: 0;
     border-bottom: 0;
-    border-left: solid 1px black;
+    border-left: 0;
     border-right: solid 1px black;
     height: 100%;
 }
