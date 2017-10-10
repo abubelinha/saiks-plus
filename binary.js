@@ -1,4 +1,4 @@
-var dataset = "binary";
+var dataset = "<h2>Binary</h2><p>Taxons are prime numbers, characters are individual bits in the binary sequence.</p>";
 
 var binary = false;
 var exclusive_mode = true;

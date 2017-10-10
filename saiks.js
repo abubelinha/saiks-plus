@@ -97,7 +97,7 @@ function taxa_table() {
     for (i = first_row; i < items.length; i++) {
         document.write("<tr><td id=\"taxa" + i + "\">");
         if (items[i][chars.length]) {
-            document.write("<a class=\"tt_name\" target=\"_blank\" href=\"" + items[i][chars.length] + "\">" + items[i][0] + "</a>");
+            document.write("<a target=\"_blank\" href=\"" + items[i][chars.length] + "\">" + items[i][0] + "</a>");
         } else {
             document.write(items[i][0]);
         }
@@ -460,7 +460,7 @@ function main() {
         taxa_table();
         document.write("</td></tr></table>\n");
     } else {
-        var my_height = 0.65 * screen.height;
+        var my_height = 0.6 * screen.height;
         // newer way, with tables in css scroll regions?
         document.write("<table width=100%><tr><td width=70% valign=top align=center><div style=\"overflow:auto; height:" + my_height + "px;\">\n");
         chars_table();
