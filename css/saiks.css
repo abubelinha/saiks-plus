@@ -2,7 +2,7 @@
     font-family: 'Muli';
     font-style: normal;
     font-weight: 400;
-    src: local('Muli Regular'), local('Muli-Regular'), url(fonts/muli.ttf) format('truetype');
+    src: local('Muli Regular'), local('Muli-Regular'), url(../fonts/muli.ttf) format('truetype');
 }
 
 body {

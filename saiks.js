@@ -447,24 +447,24 @@ function main() {
     document.write(dataset + "\n");
     document.write("<form onSubmit=\"return false;\">\n");
     document.write("<table width=100%><tr>\n");
-    document.write("<td width=10%><input type=\"submit\" value=\"RESET\" onClick=\"do_reset();\"></td>\n");
-    document.write("<td align=right width=100%><input type=\"submit\" value=\"How to use SAIKS\" onClick=\"go_to_use();\"></td>\n");
+    document.write("<td width=10%><button type=\"button\" class=\"btn btn-lg\" onClick=\"do_reset();\"><span class=\"glyphicon glyphicon-repeat\"></span> RESET</button></td>\n");
+    document.write("<td align=right width=100%><button type=\"button\" class=\"btn btn-lg\" onClick=\"go_to_use();\"><span class=\"glyphicon glyphicon-info-sign\"></span> How to use SAIKS</button></td>\n");
     document.write("</table></form><br>\n");
     document.write("</form>\n");
 
     if (old_display_mode) {
         // the old way, with a table containing the two tables
-        document.write("<table width=100%><tr><td width=70% valign=top align=center>\n");
+        document.write("<table width=100%><tr><td width=75% valign=top align=center>\n");
         chars_table();
-        document.write("</td><td width=30% valign=top align=center>\n");
+        document.write("</td><td width=25% valign=top align=center>\n");
         taxa_table();
         document.write("</td></tr></table>\n");
     } else {
-        var my_height = 0.6 * screen.height;
+        var my_height = 0.7 * screen.height;
         // newer way, with tables in css scroll regions?
-        document.write("<table width=100%><tr><td width=70% valign=top align=center><div style=\"overflow:auto; height:" + my_height + "px;\">\n");
+        document.write("<table width=100%><tr><td width=75% valign=top align=center><div style=\"overflow:auto; height:" + my_height + "px;\">\n");
         chars_table();
-        document.write("</div></td><td width=30% valign=top align=center><div style=\"overflow:auto; height:" + my_height + "px;\">\n");
+        document.write("</div></td><td width=25% valign=top align=center><div style=\"overflow:auto; height:" + my_height + "px;\">\n");
         taxa_table();
         document.write("</div></td></tr></table>\n");
     }
