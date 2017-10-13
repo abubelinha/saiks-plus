@@ -205,6 +205,13 @@ function select_taxa(i) {
             }
             char_row_state[j] = -1;
         }
+
+        // mark the other values of the characteristics as incompatible
+        for (var l = first_row; l < chars.length; l++) {
+            if (char_flags[j][l] === 0) {
+                char_flags[j][l] = -1;
+            }
+        }
     }
 
     update();
