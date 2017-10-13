@@ -5,10 +5,10 @@ var exclusive_mode = true;
 var remove_mode = false;
 
 var chars = [["unused"],
-    ["space 1", "Yes", "No"],
-    ["space 2", "Yes", "No"],
-    ["space 3", "Yes", "No"],
-    ["space 4", "Yes", "No"]
+    ["Space 1", "Yes", "No"],
+    ["Space 2", "Yes", "No"],
+    ["Space 3", "Yes", "No"],
+    ["Space 4", "Yes", "No"]
 ];
 
 

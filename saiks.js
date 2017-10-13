@@ -135,16 +135,21 @@ function toggle_char(i, j) {
             // in exclusive mode, selecting something unselects
             // the other characteristics
             for (k = 1; k < char_flags[i].length; k++) {
-                char_flags[i][k] = 0;
+                char_flags[i][k] = -1;
             }
         }
-        char_flags[i][j] = 1;
+        if (is_most_typical(i, j)) {
+            char_flags[i][j] = 2;
+        } else {
+            char_flags[i][j] = 1;
+        }
+
     }
 
     // update char_row_state[i]
     char_row_state[i] = 0;
     for (var k = 1; k < char_flags[i].length; k++) {
-        if (char_flags[i][k] === 1) {
+        if (char_flags[i][k] > 0) {
             if (char_row_state[i] === 0) {
                 char_row_state[i] = k;
             } else {
@@ -154,6 +159,21 @@ function toggle_char(i, j) {
     }
 
     update();
+}
+
+// checks if characteristic has a most possible taxa match
+function is_most_typical(i, j) {
+    for (var k = first_row; k < items.length; k++) {
+        if (!item_cache[k][i]) {
+            for (var l = 0; l < items[j][i].length; l++) {
+                var char_flag_index = parseInt(items[k][i].charAt(l), 36);
+                if (char_flag_index === j && items[k][i].charAt(l + 1) === "+") {
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
 }
 
 // sets the characteristics for a specific taxa
@@ -174,12 +194,12 @@ function select_taxa(i) {
         } else {
             // polymorphous subset...
             for (var k = 0; k < items[i][j].length; k++) {
-                var char_flag_index = parseInt(items[i][j].charAt(k), 36);
-                if (!isNaN(char_flag_index)) {
+                var value = parseInt(items[i][j].charAt(k), 36);
+                if (!isNaN(value)) {
                     if (items[i][j].charAt(k + 1) === "+") {
-                        char_flags[j][char_flag_index] = 2;
+                        char_flags[j][value] = 2;
                     } else {
-                        char_flags[j][char_flag_index] = 1;
+                        char_flags[j][value] = 1;
                     }
                 }
             }
@@ -203,16 +223,16 @@ function update_chars() {
         for (var j = 1; j < char_flags[i].length; j++) {
             switch (char_flags[i][j]) {
                 case -1:
-                    set_bgcolor(char_elems[i][j], "#7777AA");
+                    set_bgcolor(char_elems[i][j], "#7777aa");
                     break;
                 case 1:
-                    set_bgcolor(char_elems[i][j], "#00FF00");
+                    set_bgcolor(char_elems[i][j], "#00ff00");
                     break;
                 case 2:
-                    set_bgcolor(char_elems[i][j], "#00CC00");
+                    set_bgcolor(char_elems[i][j], "#00cc00");
                     break;
                 default:
-                    set_bgcolor(char_elems[i][j], "#AAAAFF");
+                    set_bgcolor(char_elems[i][j], "#aaaaff");
             }
         }
     }
@@ -222,27 +242,21 @@ function update_chars() {
 function update_taxa() {
     for (var i = first_row; i < items.length; i++) {
         if (remove_mode) {
-            // XXX - to make remove_mode work, I think we change
-            // taxa table to not be a table, but rather a list of
-            // divs...and then we can do this display="none" hack.
-            if (taxa_flags[i] >= 1) {
-                set_bgcolor(taxa_elems[i], "#0088ff");
-                taxa_elems[i].display = "block";
-            } else {
-                taxa_elems[i].style.display = "none";
-                set_bgcolor(taxa_elems[i], "#888800");
-            }
-        } else {
-            switch (taxa_flags[i]) {
-                case 1:
-                    set_bgcolor(taxa_elems[i], "#00FF00");
-                    break;
-                case 2:
-                    set_bgcolor(taxa_elems[i], "#00CC00");
-                    break;
-                default:
-                    set_bgcolor(taxa_elems[i], "#FF4444");
-            }
+            taxa_elems[i].parentNode.style.display = "table-row";
+        }
+        switch (taxa_flags[i]) {
+            case 1:
+                set_bgcolor(taxa_elems[i], "#00ff00");
+                break;
+            case 2:
+                set_bgcolor(taxa_elems[i], "#00cc00");
+                break;
+            default:
+                if (remove_mode) {
+                    taxa_elems[i].parentNode.style.display = "none";
+                } else {
+                    set_bgcolor(taxa_elems[i], "#ff4444");
+                }
         }
     }
 }
@@ -269,8 +283,8 @@ function compute_taxa() {
                 // element of char_flags is set
                 sub_disp = 0;
                 for (k = 0; k < items[i][j].length; k++) {
-                    var char_flag_index = parseInt(items[i][j].charAt(k), 36);
-                    if (!isNaN(char_flag_index) && char_flags[j][char_flag_index] > 0) {
+                    var value = parseInt(items[i][j].charAt(k), 36);
+                    if (!isNaN(value) && char_flags[j][value] > 0) {
                         sub_disp = 1;
                         if (items[i][j].charAt(k + 1) === "+") {
                             most_possible = true;
@@ -281,7 +295,6 @@ function compute_taxa() {
                     disp = 0;
                 }
             }
-
         }
         if (disp === 1 && most_possible) {
             disp = 2;
@@ -296,8 +309,7 @@ function compute_obviates_binary() {
 
     for (i = first_row; i < chars.length; i++) {
         if (char_row_state[i] === 0) {
-            var poss;
-            poss = 0;
+            var poss = 0;
             // == 1  --> Yes
             // == 2  --> No
             // == 3  --> Either
@@ -329,7 +341,7 @@ function compute_obviates_binary() {
 }
 
 function compute_obviates() {
-    var i, j, k, match_everything;
+    var i, j, k;
 
     if (binary) {
         // use optimized version instead
@@ -342,12 +354,11 @@ function compute_obviates() {
             // really instead of using a private array for the possibilities, we
             // could use a bitmask...but frankly I don't trust javascript binary
             // arithmetic, so use the poss[] array instead
-            var poss;
-            poss = [];
-            match_everything = false;
+            var poss = [];
+            var match_everything = false;
             // first mark all possibilities
             for (j = first_row; j < items.length; j++) {
-                if (taxa_flags[j] >= 1) {
+                if (taxa_flags[j] > 0) {
                     if (item_cache[j][i]) {
                         poss[item_cache[j][i]] = true;
                     } else if (items[j][i] === "?") {
@@ -355,9 +366,9 @@ function compute_obviates() {
                         match_everything = true;
                         break;
                     } else {
-                        var item = items[j][i].replace("+", "");
-                        for (k = 0; k < item.length; k++) {
-                            poss[parseInt(item.charAt(k), 36)] = true;
+                        var values = items[j][i].replace("+", "");
+                        for (k = 0; k < values.length; k++) {
+                            poss[parseInt(values.charAt(k), 36)] = true;
                         }
                     }
                 }
@@ -388,14 +399,15 @@ function do_reset() {
 }
 
 function cache_items() {
-    var i, j;
-
-    for (i = first_row; i < items.length; i++) {
+    for (var i = first_row; i < items.length; i++) {
         item_cache[i] = [];
-        for (j = first_row; j < items[i].length; j++) {
+        for (var j = first_row; j < items[i].length; j++) {
             var x = items[i][j];
-            if (x.length === 1 && x !== "?") {
-                item_cache[i][j] = parseInt(x, 36);
+            if (x.length === 1) {
+                var value = parseInt(x, 36);
+                if (!isNaN(value)) {
+                    item_cache[i][j] = value;
+                }
             }
         }
     }
@@ -431,7 +443,6 @@ function setup_char_headers() {
 function go_to_use() {
     window.location = "use.html";
 }
-
 
 function main() {
     cache_items();
