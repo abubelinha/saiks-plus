@@ -178,9 +178,11 @@ function is_most_typical(i, j) {
 
 // sets the characteristics for a specific taxa
 function select_taxa(i) {
+    var j, k;
+
     init_char_flags();		// reset everything to defaults first
 
-    for (var j = first_row; j < chars.length; j++) {
+    for (j = first_row; j < chars.length; j++) {
         var x = item_cache[i][j];
         if (x) {
             char_flags[j][x] = 1;
@@ -193,7 +195,7 @@ function select_taxa(i) {
             char_row_state[j] = -1;
         } else {
             // polymorphous subset...
-            for (var k = 0; k < items[i][j].length; k++) {
+            for (k = 0; k < items[i][j].length; k++) {
                 var value = parseInt(items[i][j].charAt(k), 36);
                 if (!isNaN(value)) {
                     if (items[i][j].charAt(k + 1) === "+") {
@@ -207,9 +209,9 @@ function select_taxa(i) {
         }
 
         // mark the other values of the characteristics as incompatible
-        for (var l = first_row; l < chars.length; l++) {
-            if (char_flags[j][l] === 0) {
-                char_flags[j][l] = -1;
+        for (k = first_row; k < chars.length; k++) {
+            if (char_flags[j][k] === 0) {
+                char_flags[j][k] = -1;
             }
         }
     }
