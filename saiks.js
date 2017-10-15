@@ -145,7 +145,7 @@ function toggle_char(i, j) {
     // update char_row_state[i]
     char_row_state[i] = 0;
     for (var k = 1; k < char_flags[i].length; k++) {
-        if (char_flags[i][k] > 0) {
+        if (char_flags[i][k] === 1) {
             if (char_row_state[i] === 0) {
                 char_row_state[i] = k;
             } else {
@@ -256,7 +256,7 @@ function compute_taxa() {
             if (char_row_state[j] === 0) {
                 // nothing selected, assume match
             } else if (item_cache[i][j]) {
-                if (char_flags[j][item_cache[i][j]] < 1) {
+                if (char_flags[j][item_cache[i][j]] !== 1) {
                     disp = 0;
                 }
             } else if (items[i][j] === "?") {

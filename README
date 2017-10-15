@@ -1,7 +1,9 @@
 Fork of SAIKS (http://www.galexander.org/saiks/acer.html)
 
-* Fixed table color height issue
 * Added most possible match by using plus sign (+) in dataset
+* Switched to some basic Bootstrap HTML5 page
+* Fixed table color height issue
+* Fixed remove_mode
 
 Original README below this line
 
