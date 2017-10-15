@@ -135,14 +135,10 @@ function toggle_char(i, j) {
             // in exclusive mode, selecting something unselects
             // the other characteristics
             for (k = 1; k < char_flags[i].length; k++) {
-                char_flags[i][k] = -1;
+                char_flags[i][k] = 0;
             }
         }
-        if (is_most_typical(i, j)) {
-            char_flags[i][j] = 2;
-        } else {
-            char_flags[i][j] = 1;
-        }
+        char_flags[i][j] = 1;
 
     }
 
@@ -159,21 +155,6 @@ function toggle_char(i, j) {
     }
 
     update();
-}
-
-// checks if characteristic has a most possible taxa match
-function is_most_typical(i, j) {
-    for (var k = first_row; k < items.length; k++) {
-        if (!item_cache[k][i]) {
-            for (var l = 0; l < items[j][i].length; l++) {
-                var char_flag_index = parseInt(items[k][i].charAt(l), 36);
-                if (char_flag_index === j && items[k][i].charAt(l + 1) === "+") {
-                    return true;
-                }
-            }
-        }
-    }
-    return false;
 }
 
 // sets the characteristics for a specific taxa
@@ -206,13 +187,6 @@ function select_taxa(i) {
                 }
             }
             char_row_state[j] = -1;
-        }
-
-        // mark the other values of the characteristics as incompatible
-        for (k = first_row; k < chars.length; k++) {
-            if (char_flags[j][k] === 0) {
-                char_flags[j][k] = -1;
-            }
         }
     }
 
@@ -273,11 +247,11 @@ function update_taxa() {
 // given the current state of char_flags, compute taxa_flags
 // (possible matching taxa)
 function compute_taxa() {
-    var i, j, k, disp, sub_disp, most_possible;
+    var i, j, k;
 
     for (i = first_row; i < items.length; i++) {
-        disp = 1;
-        most_possible = false;
+        var disp = 1;
+        var most_possible = false;
         for (j = first_row; j < chars.length; j++) {
             if (char_row_state[j] === 0) {
                 // nothing selected, assume match
@@ -290,13 +264,14 @@ function compute_taxa() {
             } else {
                 // disp remains only if the corresponding
                 // element of char_flags is set
-                sub_disp = 0;
+                var sub_disp = 0;
                 for (k = 0; k < items[i][j].length; k++) {
                     var value = parseInt(items[i][j].charAt(k), 36);
                     if (!isNaN(value) && char_flags[j][value] > 0) {
                         sub_disp = 1;
                         if (items[i][j].charAt(k + 1) === "+") {
                             most_possible = true;
+                            char_flags[j][value] = 2;
                         }
                     }
                 }
@@ -305,9 +280,23 @@ function compute_taxa() {
                 }
             }
         }
-        if (disp === 1 && most_possible) {
-            disp = 2;
+        if (most_possible) {
+            if (disp === 1) {
+                disp = 2;
+            } else {
+                // unmark the most typical characteristics
+                for (j = first_row; j < chars.length; j++) {
+                    var values = items[i][j].replace("+", "");
+                    for (k = 0; k < values.length; k++) {
+                        var value = parseInt(values.charAt(k), 36);
+                        if (char_flags[j][value] === 2) {
+                            char_flags[j][value] = 1;
+                        }
+                    }
+                }
+            }
         }
+
         taxa_flags[i] = disp;
     }
 }
