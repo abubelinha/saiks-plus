@@ -1,4 +1,5 @@
-// SLIKS-Alike Interactive Key Software (SAIKS)
+// SLIKS-Alike Interactive Key Software Plus (SAIKS+)
+// Based on SLIKS-Alike Interactive Key Software (SAIKS)
 // Inspired by SLIKS from http://stingersplace.com/SLIKS/ by Gerald F. Guala
 // Copyright (c) 2006 Greg Alexander, to be distributed under the terms of
 // the GPLv2 (COPYING), or the Apache License
