@@ -22,8 +22,8 @@ var chars = [["Latin Name"],
     ["Petiole bases", "enlarged and often enclosing axillary buds", "not usually enlarged - the buds well exposed"],
     ["Vestiture of the veins of the lower leaf surface", "densely pubescent", "glabrous to glabrate"],
     ["Sap from a freshly broken petiole", "milky", "clear"],
-    ["Size of leaf margin serrations", "minute - more than five per centimeter", "larger, fewer than five per centimeter", "bogus test entry polymorphous for spicatum"]];
-
+    ["Size of leaf margin serrations", "minute - more than five per centimeter", "larger, fewer than five per centimeter", "bogus test entry polymorphous for spicatum"]
+];
 
 var items = [[""],
     ["Acer campestre", "2", "2", "2", "2", "2", "2+", "?", "2", "2", "?", "1", "?", "?", "2", "2", "?", "1", "2", "http://plants.usda.gov/java/nameSearch?mode=sciname&keywordquery=Acer+campestre"],

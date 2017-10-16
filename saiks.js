@@ -61,8 +61,12 @@ function chars_table() {
         document.write("<td><div class=\"ct_title\">" + char_titles[i] + "</div></td>\n");
         document.write("<td><table class=\"ctt\"><tr>\n");
         percent = 100 / (chars[i].length - 1);
-        for (j = 1; j < chars[i].length; j++) {
-            document.write("<td width=" + percent + "% id=\"char" + i + "m" + j + "\" onClick=\"toggle_char(" + i + "," + j + ");\"><div class=\"ctt_char\">" + chars[i][j] + "</div></td>\n");
+        for (j = first_row; j < chars[i].length; j++) {
+            var class_name = "ctt_char";
+            if (is_most_typical(i, j)) {
+                class_name = "ctt_char_typical";
+            }
+            document.write("<td width=" + percent + "% id=\"char" + i + "m" + j + "\" onClick=\"toggle_char(" + i + "," + j + ");\"><div class=\"" + class_name + "\">" + chars[i][j] + "</div></td>\n");
         }
         document.write("</tr></table></td></tr>\n");
     }
@@ -119,7 +123,7 @@ function taxa_table() {
 function init_char_flags() {
     for (var i = first_row; i < chars.length; i++) {
         char_flags[i] = [];
-        for (var j = 1; j < chars[i].length; j++) {
+        for (var j = first_row; j < chars[i].length; j++) {
             char_flags[i][j] = 0;
         }
         char_row_state[i] = 0;
@@ -134,7 +138,7 @@ function toggle_char(i, j) {
         if (exclusive_mode) {
             // in exclusive mode, selecting something unselects
             // the other characteristics
-            for (k = 1; k < char_flags[i].length; k++) {
+            for (k = first_row; k < char_flags[i].length; k++) {
                 char_flags[i][k] = 0;
             }
         }
@@ -144,7 +148,7 @@ function toggle_char(i, j) {
 
     // update char_row_state[i]
     char_row_state[i] = 0;
-    for (var k = 1; k < char_flags[i].length; k++) {
+    for (var k = first_row; k < char_flags[i].length; k++) {
         if (char_flags[i][k] === 1) {
             if (char_row_state[i] === 0) {
                 char_row_state[i] = k;
@@ -193,6 +197,21 @@ function select_taxa(i) {
     update();
 }
 
+// checks if a characteristic has a most possible taxa match
+function is_most_typical(i, j) {
+    for (var k = first_row; k < items.length; k++) {
+        if (!item_cache[k][i]) {
+            for (var l = 0; l < items[j][i].length; l++) {
+                var char_flag_index = parseInt(items[k][i].charAt(l), 36);
+                if (char_flag_index === j && items[k][i].charAt(l + 1) === "+") {
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+}
+
 // do whatever appropriate browser magic to set the background color of
 // the specified CSS ID
 function set_bgcolor(elem, color) {
@@ -203,7 +222,7 @@ function set_bgcolor(elem, color) {
 // update the visual aspect of the characteristics table from char_flags
 function update_chars() {
     for (var i = first_row; i < chars.length; i++) {
-        for (var j = 1; j < char_flags[i].length; j++) {
+        for (var j = first_row; j < char_flags[i].length; j++) {
             switch (char_flags[i][j]) {
                 case -1:
                     set_bgcolor(char_elems[i][j], "#7777aa");
@@ -256,7 +275,8 @@ function compute_taxa() {
             if (char_row_state[j] === 0) {
                 // nothing selected, assume match
             } else if (item_cache[i][j]) {
-                if (char_flags[j][item_cache[i][j]] !== 1) {
+                var value = char_flags[j][item_cache[i][j]];
+                if (!value || value < 1) {
                     disp = 0;
                 }
             } else if (items[i][j] === "?") {

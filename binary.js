@@ -11,7 +11,6 @@ var chars = [["unused"],
     ["Space 4", "Yes", "No"]
 ];
 
-
 var items = [[""],
     ["YYYN", "1", "1", "1", "2"],
     ["YYNY", "1", "1", "2", "1"],
