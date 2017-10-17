@@ -16,11 +16,6 @@ a:link, a:visited, a:hover, a:active {
     text-decoration: none !important;
 }
 
-.ct {
-    border-collapse: collapse;
-    border: 0;
-}
-
 .ct td {
     border-top: solid 1px black;
     border-bottom: solid 1px black;
@@ -44,7 +39,6 @@ a:link, a:visited, a:hover, a:active {
 }
 
 .ctt {
-    border-collapse: collapse;
     border: 0;
     width: 100%;
     height: 100%;
@@ -69,12 +63,16 @@ a:link, a:visited, a:hover, a:active {
 }
 
 .tt {
-    border-collapse: collapse;
     border: solid 1px black;
     margin-left: 10px;
 }
 
 .tt td {
+    border: solid 1px black;
+    padding: 2px;
+}
+
+.use td {
     border: solid 1px black;
     padding: 2px;
 }

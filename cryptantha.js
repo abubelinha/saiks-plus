@@ -1,4 +1,4 @@
-var dataset = "<h2>Key to <b>Cryptantha</b> of San Diego County, California</h2><p>Dataset modified, courtesy of Ron Kelley, transferred to <b>SLIKS</b> (Guala 2004).</p>"
+var dataset = "<h2>Key to <b><i>Cryptantha</i></b> of San Diego County, California</h2><p>Dataset modified, courtesy of Ron Kelley, transferred to <b>SLIKS</b> (Guala 2004).</p>"
 
 var binary = false;
 var exclusive_mode = true;
