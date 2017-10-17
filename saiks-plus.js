@@ -1,4 +1,5 @@
 // SLIKS-Alike Interactive Key Software Plus (SAIKS+)
+// Modified by Kobe Van de Sande (2017)
 // Based on SLIKS-Alike Interactive Key Software (SAIKS)
 // Inspired by SLIKS from http://stingersplace.com/SLIKS/ by Gerald F. Guala
 // Copyright (c) 2006 Greg Alexander, to be distributed under the terms of
@@ -475,12 +476,11 @@ function main() {
 
     // output the button bar along the top
     document.write(dataset + "\n");
-    document.write("<form onSubmit=\"return false;\">\n");
-    document.write("<table width=100%><tr>\n");
-    document.write("<td width=10%><button type=\"button\" class=\"btn btn-lg\" onClick=\"do_reset();\"><span class=\"glyphicon glyphicon-repeat\"></span> RESET</button></td>\n");
-    document.write("<td align=right width=100%><button type=\"button\" class=\"btn btn-lg\" onClick=\"go_to_use();\"><span class=\"glyphicon glyphicon-info-sign\"></span> How to use SAIKS</button></td>\n");
-    document.write("</table></form><br>\n");
-    document.write("</form>\n");
+    document.write("<div class=\"row\">\n");
+    document.write("<div class=\"col-sm-12\">\n");
+    document.write("<button type=\"button\" class=\"btn btn-primary btn-lg\" onClick=\"do_reset();\"><span class=\"glyphicon glyphicon-repeat\"></span> RESET</button>\n");
+    document.write("<button type=\"button\" class=\"btn btn-primary btn-lg pull-right\" onClick=\"go_to_use();\"><span class=\"glyphicon glyphicon-info-sign\"></span> How to use SAIKS</button>\n");
+    document.write("</div></div><br>\n");
 
     if (old_display_mode) {
         // the old way, with a table containing the two tables

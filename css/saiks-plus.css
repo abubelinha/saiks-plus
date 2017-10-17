@@ -9,7 +9,6 @@ body {
     font: 400 16px 'Muli', sans-serif !important;
     margin: 0;
     padding: 0;
-    min-width: 800px;
 }
 
 a:link, a:visited, a:hover, a:active {
@@ -72,7 +71,7 @@ a:link, a:visited, a:hover, a:active {
 .tt {
     border-collapse: collapse;
     border: solid 1px black;
-    margin: 0 10px;
+    margin-left: 10px;
 }
 
 .tt td {
