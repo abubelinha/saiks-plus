@@ -1,22 +1,28 @@
 @font-face {
-    font-family: 'PT Sans Narrow';
+    font-family: 'Rambla';
     font-style: normal;
     font-weight: 400;
-    src: url('../fonts/pt-sans-narrow-regular.eot');
-    src: local('PT Sans Narrow'), local('PTSans-Narrow'),
-    url('../fonts/pt-sans-narrow-regular.eot?#iefix') format('embedded-opentype'),
-    url('../fonts/pt-sans-narrow-regular.woff2') format('woff2'),
-    url('../fonts/pt-sans-narrow-regular.woff') format('woff'),
-    url('../fonts/pt-sans-narrow-regular.ttf') format('truetype'),
-    url('../fonts/pt-sans-narrow-regular.svg#PTSansNarrow') format('svg');
+    src: url('../fonts/rambla-v5-latin-regular.eot');
+    src: local('Rambla'), local('Rambla-Regular'),
+    url('../fonts/rambla-v5-latin-regular.eot?#iefix') format('embedded-opentype'),
+    url('../fonts/rambla-v5-latin-regular.woff2') format('woff2'),
+    url('../fonts/rambla-v5-latin-regular.woff') format('woff'),
+    url('../fonts/rambla-v5-latin-regular.ttf') format('truetype'),
+    url('../fonts/rambla-v5-latin-regular.svg#Rambla') format('svg');
 }
 
 body {
-    font: 400 16px 'PT Sans Narrow', sans-serif;
+    background-image: url('../bg.jpg');
+    font: 400 16px 'Rambla', sans-serif;
+    margin-bottom: 75px;
 }
 
 .row.row-header {
     margin-bottom: 15px;
+}
+
+.table-chars {
+    background-color: white;
 }
 
 .table-chars th {
@@ -55,9 +61,13 @@ body {
     background-color: red;
 }
 
-footer {
+.navbar-footer {
     background: whitesmoke;
     color: grey;
-    padding: 1em 0;
-    margin-top: 15px;
+}
+
+.footer-text {
+    display: table-cell;
+    vertical-align: middle;
+    height: 60px;
 }
