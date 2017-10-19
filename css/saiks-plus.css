@@ -2,18 +2,24 @@
     font-family: 'Muli';
     font-style: normal;
     font-weight: 400;
-    src: local('Muli Regular'), local('Muli-Regular'), url(../fonts/muli.ttf) format('truetype');
+    src: url('../fonts/muli-regular.eot');
+    src: local('Muli Regular'), local('Muli-Regular'),
+    url('../fonts/muli-regular.eot?#iefix') format('embedded-opentype'),
+    url('../fonts/muli-regular.woff2') format('woff2'),
+    url('../fonts/muli-regular.woff') format('woff'),
+    url('../fonts/muli-regular.ttf') format('truetype'),
+    url('../fonts/muli-regular.svg#Muli') format('svg');
 }
 
 body {
-    font: 400 16px 'Muli', sans-serif !important;
+    font: 400 16px 'Muli', sans-serif;
     margin: 0;
     padding: 0;
 }
 
 a:link, a:visited, a:hover, a:active {
-    color: darkblue !important;
-    text-decoration: none !important;
+    color: darkblue;
+    text-decoration: none;
 }
 
 .ct td {
