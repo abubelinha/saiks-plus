@@ -42,6 +42,12 @@ body {
     margin: 2px !important;
 }
 
+.nav-pills > li > a {
+    cursor: pointer;
+    color: black;
+    background-color: white;
+}
+
 .nav-pills > li.typical > a {
     text-decoration: underline;
 }
@@ -62,8 +68,8 @@ body {
 }
 
 .navbar-footer {
-    background: whitesmoke;
     color: grey;
+    background-color: whitesmoke;
 }
 
 .footer-text {
