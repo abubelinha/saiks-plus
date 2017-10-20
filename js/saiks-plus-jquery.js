@@ -460,7 +460,7 @@ function setup_char_headers() {
     }
 }
 
-function init() {
+$(document).ready(function () {
     cache_items();
 
     if (binary) {
@@ -470,9 +470,32 @@ function init() {
 
     setup_char_headers();
 
+    var content = $("#content");
+    var header = "<div class=\"well\">" +
+        "<div class=\"page-header\"><h2>" + dataset + "</h2></div>" +
+        "<p>" + description + "</p>" +
+        "</div>";
+    content.append(header);
+
+    var buttons = "<div class=\"row row-header\">" +
+        "            <div class=\"col-sm-12\">" +
+        "                <button type=\"button\" class=\"btn btn-default btn-lg\" onclick=\"do_reset();\">" +
+        "                    <span class=\"glyphicon glyphicon-repeat\"></span> RESET" +
+        "                </button>" +
+        "                <button type=\"button\" class=\"btn btn-default btn-lg pull-right\" onclick=\"go_to_use();\">" +
+        "                    <span class=\"glyphicon glyphicon-info-sign\"></span> How to use SAIKS" +
+        "                </button>" +
+        "            </div>" +
+        "        </div>";
+
+    var well = $("<div></div>").addClass("well");
+    well.append(buttons);
+    content.append(well);
+
+
+
     // output the button bar along the top
-    document.write(dataset + "\n");
-    document.write("<div class=\"row\">\n");
+    /*document.write("<div class=\"row\">\n");
     document.write("<div class=\"col-sm-12\">\n");
     document.write("<button type=\"button\" class=\"btn btn-primary btn-lg\" onClick=\"do_reset();\"><span class=\"glyphicon glyphicon-repeat\"></span> RESET</button>\n");
     document.write("<button type=\"button\" class=\"btn btn-primary btn-lg pull-right\" onClick=\"location.href='use.html';\"><span class=\"glyphicon glyphicon-info-sign\"></span> How to use SAIKS</button>\n");
@@ -493,8 +516,8 @@ function init() {
         document.write("</div></td><td width=25% valign=top align=center><div style=\"overflow:auto; height:" + my_height + "px;\">\n");
         taxa_table();
         document.write("</div></td></tr></table>\n");
-    }
+    }*/
 
     init_char_flags();
-    update();
-}
+    //update();
+});

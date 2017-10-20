@@ -2,19 +2,24 @@
     font-family: 'Rambla';
     font-style: normal;
     font-weight: 400;
-    src: url('../fonts/rambla-v5-latin-regular.eot');
+    src: url('../fonts/rambla-regular.eot');
     src: local('Rambla'), local('Rambla-Regular'),
-    url('../fonts/rambla-v5-latin-regular.eot?#iefix') format('embedded-opentype'),
-    url('../fonts/rambla-v5-latin-regular.woff2') format('woff2'),
-    url('../fonts/rambla-v5-latin-regular.woff') format('woff'),
-    url('../fonts/rambla-v5-latin-regular.ttf') format('truetype'),
-    url('../fonts/rambla-v5-latin-regular.svg#Rambla') format('svg');
+    url('../fonts/rambla-regular.eot?#iefix') format('embedded-opentype'),
+    url('../fonts/rambla-regular.woff2') format('woff2'),
+    url('../fonts/rambla-regular.woff') format('woff'),
+    url('../fonts/rambla-regular.ttf') format('truetype'),
+    url('../fonts/rambla-regular.svg#Rambla') format('svg');
 }
 
 body {
-    background-image: url('../bg.jpg');
+    background-image: url('images/bg.gif');
     font: 400 16px 'Rambla', sans-serif;
-    margin-bottom: 75px;
+    margin-top: 20px;
+    margin-bottom: 60px;
+}
+
+.page-header {
+    border-bottom: solid 1px darkgrey;
 }
 
 .row.row-header {
@@ -69,7 +74,6 @@ body {
 
 .navbar-footer {
     color: grey;
-    background-color: whitesmoke;
 }
 
 .footer-text {
