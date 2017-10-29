@@ -6,7 +6,7 @@
 // the GPLv2 (COPYING), or the Apache License
 // (http://www.apache.org/licenses/LICENSE-2.0), at your discretion
 
-var old_display_mode = false;
+var footer_text = "SAIKS+ is based on <a href=\"http://www.galexander.org/saiks/\">SAIKS</a> by Greg Alexander, which is based on <a href=\"http://stingersplace.com/SLIKS/\">SLIKS</a> by Stinger.";
 
 // defaults for things that can be overridden in data.js
 var binary = false;
@@ -471,27 +471,30 @@ $(document).ready(function () {
     setup_char_headers();
 
     var content = $("#content");
-    var header = "<div class=\"well\">" +
-        "<div class=\"page-header\"><h2>" + dataset + "</h2></div>" +
-        "<p>" + description + "</p>" +
-        "</div>";
+    var header = "<div class=\"well\">" + dataset + "</div>";
     content.append(header);
 
-    var buttons = "<div class=\"row row-header\">" +
-        "            <div class=\"col-sm-12\">" +
-        "                <button type=\"button\" class=\"btn btn-default btn-lg\" onclick=\"do_reset();\">" +
-        "                    <span class=\"glyphicon glyphicon-repeat\"></span> RESET" +
-        "                </button>" +
-        "                <button type=\"button\" class=\"btn btn-default btn-lg pull-right\" onclick=\"go_to_use();\">" +
-        "                    <span class=\"glyphicon glyphicon-info-sign\"></span> How to use SAIKS" +
-        "                </button>" +
-        "            </div>" +
-        "        </div>";
+    var buttons = "<div class=\"row row-header\"><div class=\"col-sm-12\">";
+    buttons += "<button type=\"button\" class=\"btn btn-default btn-lg\" onclick=\"do_reset();\">";
+    buttons += "<span class=\"glyphicon glyphicon-repeat\"></span> RESET";
+    buttons += "</button><button type=\"button\" class=\"btn btn-default btn-lg pull-right\" onclick=\"go_to_use();\">";
+    buttons += "<span class=\"glyphicon glyphicon-info-sign\"></span> How to use SAIKS";
+    buttons += "</button></div></div>";
 
     var well = $("<div></div>").addClass("well");
     well.append(buttons);
+
+    var row = $("<div></div>").addClass("row");
+    row.append(chars_table());
+    row.append(taxa_table());
+
+    well.append(row);
     content.append(well);
 
+    var footer = "<footer class=\"navbar navbar-default navbar-footer navbar-fixed-bottom\">";
+    footer += "<div class=\"container-fluid\"><span class=\"footer-text\">" + footer_text + "</span></div></footer>";
+
+    $("body").append(footer);
 
 
     // output the button bar along the top

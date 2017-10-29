@@ -18,7 +18,8 @@ body {
     margin-bottom: 60px;
 }
 
-.page-header {
+h2 {
+    padding-bottom: 5px;
     border-bottom: solid 1px darkgrey;
 }
 
