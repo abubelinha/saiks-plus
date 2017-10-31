@@ -467,7 +467,7 @@ $(document).ready(function () {
     var buttons = "<div class=\"row row-header\"><div class=\"col-sm-12\">";
     buttons += "<button type=\"button\" class=\"btn btn-default btn-lg\" onclick=\"do_reset();\">";
     buttons += "<span class=\"glyphicon glyphicon-repeat\"></span> RESET";
-    buttons += "</button><button type=\"button\" class=\"btn btn-default btn-lg pull-right\" onclick=\"go_to_use();\">";
+    buttons += "</button><button type=\"button\" class=\"btn btn-default btn-lg pull-right\" onclick=\"location.href='use.html';\">";
     buttons += "<span class=\"glyphicon glyphicon-info-sign\"></span> How to use SAIKS";
     buttons += "</button></div></div>";
 
