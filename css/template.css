@@ -37,6 +37,7 @@ h2 {
 
 .table-chars td {
     padding: 0 !important;
+    vertical-align: middle !important;
 }
 
 .nav-nested > li {

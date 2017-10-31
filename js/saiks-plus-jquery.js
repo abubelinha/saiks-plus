@@ -34,11 +34,6 @@ var char_row_state = [];
 // == -1      --> several selected
 // == 1-35    --> just that col selected (great for exclusive/binary mode!)
 
-// these are initialized by *_table() to work around the fact that MSIE
-// (et al?) have a distinct lack of document.getElementById()
-var char_elems = [];
-var taxa_elems = [];
-
 // to support categories of characteristics
 var char_titles = [];
 var char_headers = [];
@@ -48,77 +43,73 @@ var any_char_headers = false;
 
 // emit characteristics table
 function chars_table() {
-    var i, j, k;
+    var i, j;
 
-    document.write("<table class=\"ct\">\n");
+    var col = $("<div></div>").addClass("col-sm-9");
+    var table = create_char_table();
 
     for (i = first_row; i < chars.length; i++) {
-        var percent;
-        document.write("<tr>");
         if (any_char_headers) {
             if (char_header_run[i] > 0) {
-                document.write("<td rowspan=" + char_header_run[i] + "><div class=\"ct_cat\">" + char_headers[i] + "</div></td>\n");
+                if (i !== first_row) {
+                    col.append(table);
+                    table = create_char_table();
+                }
+                if (char_headers[i]) {
+                    table.append("<tr><th class=\"active\" colspan=\"2\">" + char_headers[i] + "</th></tr>");
+                }
             }
         }
-        document.write("<td><div class=\"ct_title\">" + char_titles[i] + "</div></td>\n");
-        document.write("<td><table class=\"ctt\"><tr>\n");
-        percent = 100 / (chars[i].length - 1);
+
+        var char_tr = $("<tr></tr>");
+        char_tr.append("<th>" + char_titles[i] + "</th>");
+
+        var char_ul = $("<ul></ul>").addClass("nav nav-pills nav-nested nav-justified");
+        char_tr.append($("<td></td>").append(char_ul));
+
+        table.append(char_tr);
+
         for (j = first_row; j < chars[i].length; j++) {
-            var class_name = "ctt_char";
+            var value = $("<li></li>");
+            value.attr("id", "char" + i + "m" + j);
             if (is_most_typical(i, j)) {
-                class_name = "ctt_char_typical";
+                value.addClass("typical");
             }
-            document.write("<td width=" + percent + "% id=\"char" + i + "m" + j + "\" onClick=\"toggle_char(" + i + "," + j + ");\"><div class=\"" + class_name + "\">" + chars[i][j] + "</div></td>\n");
-        }
-        document.write("</tr></table></td></tr>\n");
-    }
-
-    document.write("</table>\n");
-
-    // this could be improved slightly by getting just the tds
-    // associated with the table we want, but it seems that simply not
-    // referencing document.all is enough to guarantee decent performance,
-    // even on firefox!
-    var elem_list = document.getElementsByTagName("td");
-    var len = elem_list.length;
-    for (i = 0; i < len; i++) {
-        if (elem_list[i].id.substr(0, 4) === "char") {
-            var s;
-            s = elem_list[i].id.substr(4);
-            k = s.indexOf("m");
-            j = s.substr(0, k) - 0;
-            k = s.substr(k + 1) - 0;
-            if (!char_elems[j]) {
-                char_elems[j] = [];
-            }
-            char_elems[j][k] = elem_list[i];
+            value.append("<a onclick=\"toggle_char(" + i + "," + j + ");\">" + chars[i][j] + "</a>")
+            char_ul.append(value);
         }
     }
+
+    col.append(table);
+    return col;
+}
+
+function create_char_table() {
+    var table = $("<table></table>").addClass("table table-bordered table-chars");
+    table.append($("<tbody></tbody>"));
+    return table;
 }
 
 // emit taxa table
 function taxa_table() {
     var i;
-    document.write("<table class=\"tt\">");
+
+    var col = $("<div></div>").addClass("col-sm-3");
+    var taxa_ul = $("<ul></ul>").addClass("nav nav-pills nav-stacked");
+
     for (i = first_row; i < items.length; i++) {
-        document.write("<tr><td id=\"taxa" + i + "\">");
+        var value = $("<li></li>");
+        value.attr("id", "taxa" + i);
         if (items[i][chars.length]) {
-            document.write("<a target=\"_blank\" href=\"" + items[i][chars.length] + "\">" + items[i][0] + "</a>");
+            value.append("<a target=\"_blank\" href=\"" + items[i][chars.length] + "\">" + items[i][0] + "</a>");
         } else {
-            document.write(items[i][0]);
+            value.append(items[i][0]);
         }
-        document.write("</td><td onClick=\"select_taxa(" + i + ");\"><img src=\"char-button.gif\"></td></tr>");
+        taxa_ul.append(value);
     }
 
-    document.write("</table>");
-
-    var elem_list = document.getElementsByTagName("td");
-    var len = elem_list.length;
-    for (i = 0; i < len; i++) {
-        if (elem_list[i].id.substr(0, 4) === "taxa") {
-            taxa_elems[elem_list[i].id.substr(4) - 0] = elem_list[i];
-        }
-    }
+    col.append(taxa_ul);
+    return col;
 }
 
 // inits the list of the currently selected characteristics
@@ -136,7 +127,7 @@ function init_char_flags() {
 function toggle_char(i, j) {
     if (char_flags[i][j] > 0) {
         char_flags[i][j] = 0;
-    } else {
+    } else if (char_flags[i][j] === 0) {
         if (exclusive_mode) {
             // in exclusive mode, selecting something unselects
             // the other characteristics
@@ -214,29 +205,24 @@ function is_most_typical(i, j) {
     return false;
 }
 
-// do whatever appropriate browser magic to set the background color of
-// the specified CSS ID
-function set_bgcolor(elem, color) {
-    if (!elem) return;
-    elem.setAttribute("style", "background-color:" + color);
-}
-
 // update the visual aspect of the characteristics table from char_flags
 function update_chars() {
     for (var i = first_row; i < chars.length; i++) {
         for (var j = first_row; j < char_flags[i].length; j++) {
+            var elem = $("#char" + i + "m" + j);
+            elem.removeClass("selected");
+            elem.removeClass("selected-plus");
+            elem.removeClass("disabled");
             switch (char_flags[i][j]) {
                 case -1:
-                    set_bgcolor(char_elems[i][j], "#7777aa");
+                    elem.addClass("disabled");
                     break;
                 case 1:
-                    set_bgcolor(char_elems[i][j], "#00ff00");
+                    elem.addClass("selected");
                     break;
                 case 2:
-                    set_bgcolor(char_elems[i][j], "#00cc00");
+                    elem.addClass("selected-plus");
                     break;
-                default:
-                    set_bgcolor(char_elems[i][j], "#aaaaff");
             }
         }
     }
@@ -245,21 +231,25 @@ function update_chars() {
 // update the taxa table to visually match the taxa_flags array
 function update_taxa() {
     for (var i = first_row; i < items.length; i++) {
+        var elem = $("#taxa" + i);
+        elem.removeClass("selected");
+        elem.removeClass("selected-plus");
+        elem.removeClass("mismatch");
         if (remove_mode) {
-            taxa_elems[i].parentNode.style.display = "table-row";
+            elem.css("display", "block");
         }
         switch (taxa_flags[i]) {
             case 1:
-                set_bgcolor(taxa_elems[i], "#00ff00");
+                elem.addClass("selected");
                 break;
             case 2:
-                set_bgcolor(taxa_elems[i], "#00cc00");
+                elem.addClass("selected-plus");
                 break;
             default:
                 if (remove_mode) {
-                    taxa_elems[i].parentNode.style.display = "none";
+                    elem.css("display", "none");
                 } else {
-                    set_bgcolor(taxa_elems[i], "#ff4444");
+                    elem.addClass("mismatch");
                 }
         }
     }
@@ -496,31 +486,6 @@ $(document).ready(function () {
 
     $("body").append(footer);
 
-
-    // output the button bar along the top
-    /*document.write("<div class=\"row\">\n");
-    document.write("<div class=\"col-sm-12\">\n");
-    document.write("<button type=\"button\" class=\"btn btn-primary btn-lg\" onClick=\"do_reset();\"><span class=\"glyphicon glyphicon-repeat\"></span> RESET</button>\n");
-    document.write("<button type=\"button\" class=\"btn btn-primary btn-lg pull-right\" onClick=\"location.href='use.html';\"><span class=\"glyphicon glyphicon-info-sign\"></span> How to use SAIKS</button>\n");
-    document.write("</div></div><br>\n");
-
-    if (old_display_mode) {
-        // the old way, with a table containing the two tables
-        document.write("<table width=100%><tr><td width=75% valign=top align=center>\n");
-        chars_table();
-        document.write("</td><td width=25% valign=top align=center>\n");
-        taxa_table();
-        document.write("</td></tr></table>\n");
-    } else {
-        var my_height = 0.7 * screen.height;
-        // newer way, with tables in css scroll regions?
-        document.write("<table width=100%><tr><td width=75% valign=top align=center><div style=\"overflow:auto; height:" + my_height + "px;\">\n");
-        chars_table();
-        document.write("</div></td><td width=25% valign=top align=center><div style=\"overflow:auto; height:" + my_height + "px;\">\n");
-        taxa_table();
-        document.write("</div></td></tr></table>\n");
-    }*/
-
     init_char_flags();
-    //update();
+    update();
 });
