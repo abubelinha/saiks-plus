@@ -2,7 +2,7 @@ var dataset = "<h2><b>Maples</b> (<b><i>Acer</i></b>) of Michigan: a Leaf Key</h
 
 var binary = false;
 var exclusive_mode = true;
-var remove_mode = true;
+var remove_mode = false;
 
 var chars = [["Latin Name"],
     ["CAT1|Leaf arrangement", "compound", "simple"],

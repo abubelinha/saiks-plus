@@ -450,6 +450,84 @@ function setup_char_headers() {
     }
 }
 
+function usage() {
+    var usage = "<div id=\"usage\" class=\"modal\" role=\"dialog\">";
+    usage += "    <div class=\"modal-dialog modal-lg\">";
+    usage += "        <div class=\"modal-content\">";
+    usage += "            <div class=\"modal-header\">";
+    usage += "                <button type=\"button\" class=\"close\" data-dismiss=\"modal\">&times;</button>";
+    usage += "                <h3 class=\"modal-title\">Usage</h3>";
+    usage += "            </div>";
+    usage += "            <div class=\"modal-body\">";
+    usage += "                <p>Select character states from the table at the left. As you make selections, taxa in the list on the right will";
+    usage += "                    turn red to indicate that they do not match your selections. Also, as you select character states, items in the";
+    usage += "                    characteristics table will grey out to indicate that they are no longer possible (no taxa would have the";
+    usage += "                    resulting combination of character states). When you select a most typical character state (dark green) the";
+    usage += "                    corresponding taxa will also turn dark green in the green color list, indicating that this is probably the";
+    usage += "                    taxa to be identified. Select a character state only when you are confident. If not, do not select.</p>";
+    usage += "                <p>If you click on a taxon name in the table on the right, you will be taken to the web page for this taxon.</p>";
+    usage += "                <p>If you click on \"SHOW CHARS\" next to a taxon name, the character states of that taxon will be shown in the";
+    usage += "                    characteristics table. When the taxa has typical character states, they will be indicated by a dark green";
+    usage += "                    color.</p>";
+    usage += "                <p>If you click on the \"RESET\" button at top left, all characters will be reset.</p>";
+    usage += "                <p>If you click on the name of a character, that character will be reset.</p>";
+    usage += "                <table width=100%>";
+    usage += "                    <tr>";
+    usage += "                        <td width=50% align=center>";
+    usage += "                            <p>Color key for the characteristics table:<br>";
+    usage += "                            <table class=\"use\">";
+    usage += "                                <tr>";
+    usage += "                                    <td>name of character</td>";
+    usage += "                                </tr>";
+    usage += "                                <tr>";
+    usage += "                                    <td style=\"background-color:#aaaaff\">unselected character state</td>";
+    usage += "                                </tr>";
+    usage += "                                <tr>";
+    usage += "                                    <td style=\"background-color:#aaaaff; font-weight: bold;\">unselected most determinative character";
+    usage += "                                        state";
+    usage += "                                    </td>";
+    usage += "                                </tr>";
+    usage += "                                <tr>";
+    usage += "                                    <td style=\"background-color:#00ff00\">selected character state</td>";
+    usage += "                                </tr>";
+    usage += "                                <tr>";
+    usage += "                                    <td style=\"background-color:#00cc00; font-weight: bold;\">selected most typical character state";
+    usage += "                                    </td>";
+    usage += "                                </tr>";
+    usage += "                                <tr>";
+    usage += "                                    <td style=\"background-color:#7777aa\">incompatible character state</td>";
+    usage += "                                </tr>";
+    usage += "                            </table>";
+    usage += "                        </td>";
+    usage += "                        <td width=50% align=center>";
+    usage += "                            <p>Color key for the taxon table:<br>";
+    usage += "                            <table class=\"use\">";
+    usage += "                                <tr>";
+    usage += "                                    <td>link to descriptive page</td>";
+    usage += "                                </tr>";
+    usage += "                                <tr>";
+    usage += "                                    <td style=\"background-color:#00ff00\">taxon matches selected characteristics</td>";
+    usage += "                                </tr>";
+    usage += "                                <tr>";
+    usage += "                                    <td style=\"background-color:#00cc00\">most probable taxon match</td>";
+    usage += "                                </tr>";
+    usage += "                                <tr>";
+    usage += "                                    <td style=\"background-color:#ff4444\">taxon does not match</td>";
+    usage += "                                </tr>";
+    usage += "                            </table>";
+    usage += "                        </td>";
+    usage += "                    </tr>";
+    usage += "                </table>";
+    usage += "            </div>";
+    usage += "            <div class=\"modal-footer\">";
+    usage += "                <button type=\"button\" class=\"btn btn-default btn-lg\" data-dismiss=\"modal\">Close</button>";
+    usage += "            </div>";
+    usage += "        </div>";
+    usage += "    </div>";
+    usage += "</div>";
+    return usage;
+}
+
 $(document).ready(function () {
     cache_items();
 
@@ -467,7 +545,7 @@ $(document).ready(function () {
     var buttons = "<div class=\"row row-header\"><div class=\"col-sm-12\">";
     buttons += "<button type=\"button\" class=\"btn btn-default btn-lg\" onclick=\"do_reset();\">";
     buttons += "<span class=\"glyphicon glyphicon-repeat\"></span> RESET";
-    buttons += "</button><button type=\"button\" class=\"btn btn-default btn-lg pull-right\" onclick=\"location.href='use.html';\">";
+    buttons += "</button><button type=\"button\" class=\"btn btn-default btn-lg pull-right\" data-toggle=\"modal\" data-target=\"#usage\">";
     buttons += "<span class=\"glyphicon glyphicon-info-sign\"></span> How to use SAIKS";
     buttons += "</button></div></div>";
 
@@ -480,6 +558,7 @@ $(document).ready(function () {
 
     well.append(row);
     content.append(well);
+    content.append(usage());
 
     var footer = "<footer class=\"navbar navbar-default navbar-footer navbar-fixed-bottom\">";
     footer += "<div class=\"container-fluid\"><span class=\"footer-text\">" + footer_text + "</span></div></footer>";
