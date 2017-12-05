@@ -560,7 +560,7 @@ $(document).ready(function () {
     content.append(well);
     content.append(usage());
 
-    var footer = "<footer class=\"navbar navbar-default navbar-footer navbar-fixed-bottom\">";
+    var footer = "<footer class=\"footer\">";
     footer += "<div class=\"container-fluid\"><span class=\"footer-text\">" + footer_text + "</span></div></footer>";
 
     $("body").append(footer);
