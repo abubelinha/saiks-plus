@@ -85,7 +85,7 @@ function chars_table() {
 }
 
 function create_char_table() {
-    var table = $("<table></table>").addClass("table table-bordered table-chars");
+    var table = $("<table></table>").addClass("table table-bordered table-chars table-condensed");
     table.append($("<tbody></tbody>"));
     return table;
 }

@@ -58,6 +58,7 @@ h2 {
     cursor: pointer;
     color: black;
     background-color: white;
+    padding: 2px 15px;
 }
 
 .nav-pills > li > a:hover {
