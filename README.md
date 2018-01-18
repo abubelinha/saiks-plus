@@ -2,13 +2,13 @@
 
 Fork of SAIKS (http://www.galexander.org/saiks/acer.html)
 
-####v1
+#### V1
 * Added most possible match by using plus sign (+) in dataset
 * Switched to some basic Bootstrap HTML5 page
 * Fixed table color height issue
 * Fixed remove_mode
 
-#### v2
+#### V2
 * Bootstrap overhaul
 
 Original README below this line
