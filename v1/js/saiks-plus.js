@@ -475,7 +475,7 @@ function main() {
     document.write("<div class=\"row\">\n");
     document.write("<div class=\"col-sm-12\">\n");
     document.write("<button type=\"button\" class=\"btn btn-default btn-lg\" onClick=\"do_reset();\"><span class=\"glyphicon glyphicon-repeat\"></span> RESET</button>\n");
-    document.write("<button type=\"button\" class=\"btn btn-default btn-lg pull-right\" onClick=\"location.href='../use.html';\"><span class=\"glyphicon glyphicon-info-sign\"></span> How to use SAIKS</button>\n");
+    document.write("<button type=\"button\" class=\"btn btn-default btn-lg pull-right\" onClick=\"location.href='use.html';\"><span class=\"glyphicon glyphicon-info-sign\"></span> How to use SAIKS</button>\n");
     document.write("</div></div><br>\n");
 
     if (old_display_mode) {
